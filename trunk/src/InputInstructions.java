@@ -48,11 +48,9 @@ public class InputInstructions {
 		}
 		
 		String read = "";
-		String line = "";
-		
+		String line = "";		
 		FileReader reader = new FileReader(input);
-		BufferedReader file = new BufferedReader(reader);
-		
+		BufferedReader file = new BufferedReader(reader);		
 		read = file.readLine();
 		//gets just the first line.
 		String firstLine = read.toString();
