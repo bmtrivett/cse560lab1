@@ -5,11 +5,11 @@ import java.io.*;
 import java.lang.reflect.Array;
 
 /**
- * 
- * @author BSchuck
  * To put the input information into the 
  * data structures that represent the memory and 
  * registers of the machine.
+ * @author BSchuck
+ * 
  *
  */
 public class InputInstructions {
