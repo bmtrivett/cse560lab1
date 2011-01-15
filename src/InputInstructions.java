@@ -64,7 +64,10 @@ public class InputInstructions {
 		 while (read != null) {
 				read = file.readLine();
 				if (read != null) {
-					memoryLength[i] = read;
+					String memoryPos = firstLine.substring(eleven);
+					int decValue = Integer.valueOf(memoryPos, 16).intValue();
+					//convert memory to pos in array then add it
+					memoryLength.add(decValue);
 					i++;
 				} else {
 					break;
