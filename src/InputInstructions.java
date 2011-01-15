@@ -28,23 +28,17 @@ public class InputInstructions {
 	 * @throws IOException
 	 * Takes in the Input file and makes an array of all the memory.
 	 */
-	public static void main(String[] args) throws IOException {
+	public static String FindFile(String[] args) throws IOException {
 		
 		int i = 0;
-		Scanner keyboard = new Scanner(System.in);
-		String input = "";
+		
+	String input = "";
 		
 		File inputFile = new File(input);
 		boolean fileExists = inputFile.exists();
-		//gets the file and makes sure it exist before moving on.
-		while (fileExists == false) {
-			System.out.println("The file does not exist. Try another one.");
-			
-			input = keyboard.nextLine();
-			
-			inputFile = new File(input);
-			fileExists = inputFile.exists();
-			
+		//make catch throws in catch part return stamtment
+		if(fileExists == false) {		
+			return "The file does not exist. Try another one.";	
 		}
 		
 		String read = "";
@@ -76,7 +70,7 @@ public class InputInstructions {
 					break;
 				}
 		 }
-		
+	return null;	
 	}
 
 }
