@@ -199,7 +199,7 @@ public class Controller {
 			}
 		}
 	}
-
+	
 	/**
 	 * An action listener that takes the user input in the text field of the
 	 * View and decides what mode to run the program in.
