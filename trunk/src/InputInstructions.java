@@ -58,7 +58,7 @@ public class InputInstructions {
 		String memorySize = firstLine.substring(eleven);
 		//converts the hex to figure out how many memory spaces there are.
 		int hexValue = Integer.valueOf(memorySize, 16).intValue();
-		 //creats an array of string to the length.
+		 //creates an array of string to the length.
 		 String[] memoryLength = new String[hexValue];
 		 //while the file still has input read every line and put it into an array
 		 while (read != null) {
