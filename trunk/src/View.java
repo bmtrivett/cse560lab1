@@ -82,6 +82,7 @@ public class View extends JFrame {
 	 */
 	public void outputText(String out) {
 		outputField.append(out);
+		outputField.setCaretPosition(outputField.getDocument().getLength());
 	}
 
 	/**

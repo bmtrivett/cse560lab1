@@ -12,6 +12,9 @@ public class MachineMain {
 	public static Model machineModel;
 
 	public static void main(String[] args) {
+		// Initialize model
+		machineModel = new Model();
+		
 		// Initialize view
 		machineView = new View();
 		machineView.setVisible(true);
@@ -19,8 +22,6 @@ public class MachineMain {
 		// Initialize controller
 		machineController = new Controller();
 
-		// Initialize model
-		machineModel = new Model();
 	}
 
 }
