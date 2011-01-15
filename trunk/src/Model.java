@@ -13,12 +13,12 @@ public class Model {
 	 * The map will store an integer denoting the register number and the string
 	 * of hex for the registers.
 	 */
-	public static Map<Integer, String> registerMap;
+	public Map<Integer, String> registerMap;
 	/**
 	 * The entire abstract machine's memory. Each string in the array will have
 	 * a length of 4, representing the hex value stored there.
 	 */
-	public static String[] memoryArray;
+	public String[] memoryArray;
 	/**
 	 * The default limit of instructions allowed to be executed.
 	 */
