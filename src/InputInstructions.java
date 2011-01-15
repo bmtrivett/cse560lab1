@@ -64,10 +64,13 @@ public class InputInstructions {
 		 while (read != null) {
 				read = file.readLine();
 				if (read != null) {
-					String memoryPos = firstLine.substring(eleven);
-					int decValue = Integer.valueOf(memoryPos, 16).intValue();
+					String textInstructions = read.toString();
+					String memoryPos = textInstructions.substring(2, 4);
+					String textData = textInstructions.substring(4);
+					int pos = Integer.valueOf(memoryPos, 16).intValue();
+					
 					//convert memory to pos in array then add it
-					memoryLength.add(decValue);
+					MachineMain.machineModel.memoryArray[pos]=textData;
 					i++;
 				} else {
 					break;
