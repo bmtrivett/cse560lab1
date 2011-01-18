@@ -16,7 +16,7 @@ public class InputInstructions {
 	/**
 	 * A magic number to be used within the program. 
 	 */
-	private final static int eleven = 11;
+	private final static int posOfInstr= 11;
 	/**
 	 * The map will store an integer and the string of hex for the registers.
 	 */
@@ -51,7 +51,7 @@ public class InputInstructions {
 		//gets just the first line.
 		String firstLine = read.toString();
 		//cuts off the last four hex characters.
-		String memorySize = firstLine.substring(eleven);
+		String memorySize = firstLine.substring(posOfInstr);
 		//converts the hex to figure out how many memory spaces there are.
 		int hexValue = Integer.valueOf(memorySize, 16).intValue();
 		 //creates an array of string to the length.
