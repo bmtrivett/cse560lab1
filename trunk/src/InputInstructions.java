@@ -4,6 +4,8 @@ import java.util.Scanner;
 import java.io.*;
 import java.lang.reflect.Array;
 
+//add 3000 and 0104 together to get total range throw error if they add outside of that
+
 /**
  * To put the input information into the 
  * data structures that represent the memory and 
@@ -59,6 +61,10 @@ public class InputInstructions {
 		 //while the file still has input read every line and put it into an array
 		 while (read != null) {
 				read = file.readLine();
+				//if it E blow up
+				if(read.length() != 9){
+				return "The text record has an error on line "; //+ counter 
+			}
 				if (read != null) {
 					String textInstructions = read.toString();
 					String memoryPos = textInstructions.substring(2, 4);
@@ -68,6 +74,7 @@ public class InputInstructions {
 					//convert memory to pos in array then add it
 					MachineMain.machineModel.memoryArray[pos]=textData;
 					i++;
+					//if count exceeds the length
 				} else {
 					break;
 				}
