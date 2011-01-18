@@ -41,11 +41,13 @@ public class InputInstructions {
 			return "The file does not exist. Try another one.";	
 		}
 		
-		String read = "";
-		String line = "";		
+		String read = "";		
 		FileReader reader = new FileReader(input);
 		BufferedReader file = new BufferedReader(reader);		
 		read = file.readLine();
+		if(read.length() != 15){
+			return "The header record is incorrect in the file please try a new file.";
+		}
 		//gets just the first line.
 		String firstLine = read.toString();
 		//cuts off the last four hex characters.
