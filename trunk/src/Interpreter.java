@@ -46,9 +46,8 @@
 					this.memoryLength[this.programCounter].charAt(2) != '2' && 
 					this.memoryLength[this.programCounter].charAt(3) != '5') {
 				String instruction = this.memoryLength[this.programCounter];
-				// The line below should be uncommented once the parse method
-				// has been written.
-				//this.parserOfInstructions.parse(instruction);
+				this.programCounter++;
+				this.parserOfInstructions.parse(instruction);
 			}
 		}
 	}
