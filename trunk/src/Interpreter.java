@@ -14,10 +14,25 @@
 		public String[] memoryLength;
 		
 		/**
-		 * This integer will have the start value of the instructions
-		 * in hex (although it will actually be an integer)
+		 * This array of strings will hold the contents of the General 
+		 * Purpose Registers. Each string will have a length of four 
+		 * and will be formatted as a hex value. Since there are 8 
+		 * general purpose registers, this array will have a length of 8.
 		 */
-		public int hexStartValue;
+		public String[] gpRegisters;
+		
+		/**
+		 * This array of integers will have a length of 3 and each integer
+		 * may have a value of 0 or 1.
+		 */
+		public int[] CCR;
+		
+		/**
+		 * This string of four characters will have the start value
+		 * of the instructions in hex.
+		 */
+		public String hexStartValue;
+		
 		/**
 		 * This integer will have the location in the array of the
 		 * next instruction.
@@ -33,11 +48,12 @@
 		 */
 		public Interpreter (
 			String[] memory,
-			int hexStartValue
+			String hexStartValue
 		) {
 			this.memoryLength = memory;
 			this.hexStartValue = hexStartValue;
-			this.programCounter = this.hexStartValue;
+			this.programCounter = 
+				interpreterUtility.decodeEntireMemoryLocation(hexStartValue);
 			this.parserOfInstructions = new instructionParser();
 		}
 		
@@ -47,7 +63,12 @@
 					this.memoryLength[this.programCounter].charAt(3) != '5') {
 				String instruction = this.memoryLength[this.programCounter];
 				this.programCounter++;
-				this.parserOfInstructions.parse(instruction);
+				this.parserOfInstructions.parse(
+						instruction, 
+						this.programCounter, 
+						this.memoryLength, 
+						this.CCR, 
+						this.gpRegisters);
 			}
 		}
 	}
