@@ -24,7 +24,7 @@ public class Interpreter {
 	 * This array of integers will have a length of 3 and each integer
 	 * may have a value of 0 or 1.
 	 */
-	public Integer[] conditionCodeRegisters;
+	public Map<Character, Boolean> conditionCodeRegisters;
 
 	/**
 	 * This string of four characters will have the start value
@@ -36,7 +36,7 @@ public class Interpreter {
 	 * This integer will have the location in the array of the
 	 * next instruction.
 	 */
-	public int programCounter;
+	public String programCounter;
 
 	public instructionParser parserOfInstructions;
 	
@@ -49,18 +49,18 @@ public class Interpreter {
 	public Interpreter (
 			Map<Integer, String> registerMap,
 			String[] memoryArray,
-			Integer[] conditionCodeRegisters,
+			Map<Character, Boolean> conditionCodeRegisters,
 			String hexStartValue
 	) {
 		this.registerMap = registerMap;
 		this.memoryArray = memoryArray;
 		this.conditionCodeRegisters = conditionCodeRegisters;
 		this.hexStartValue = hexStartValue;
-		this.programCounter = Utility.HexToDecimalValue(hexStartValue);
+		this.programCounter = hexStartValue;
 		this.parserOfInstructions = new instructionParser();
 	}
 
-	public void ExecuteAllInstructions() {
+	public String ExecuteAllInstructions() {
 		while (this.memoryArray[this.programCounter].charAt(0) != 'F' && 
 				this.memoryArray[this.programCounter].charAt(2) != '2' && 
 				this.memoryArray[this.programCounter].charAt(3) != '5') {
