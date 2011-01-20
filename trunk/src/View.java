@@ -9,7 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JOptionPane;
 
 /**
- * Contains the GUI for the Wi-11 Machine. Displays a frame with a text field
+ * Contains the GUI for the Wileven Machine. Displays a frame with a text field
  * for input and a text area for output.
  * 
  * @author Ben Trivett
@@ -23,7 +23,7 @@ public class View extends JFrame {
 	private static JTextArea outputField;
 
 	/**
-	 * Constructor for the Wi-11 Machine GUI.
+	 * Constructor for the Wileven Machine GUI.
 	 */
 	public View() {
 		this.resetView();
@@ -49,7 +49,7 @@ public class View extends JFrame {
 		// Finalize layout by adding content and title.
 		this.setContentPane(content);
 		this.pack();
-		this.setTitle("Wi-11 Machine");
+		this.setTitle("Wileven Machine");
 
 		// Set the window closing event.
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
