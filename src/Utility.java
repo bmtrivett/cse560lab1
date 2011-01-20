@@ -12,10 +12,8 @@ public class Utility {
 	 *            The hexadecimal string that will be converted to binary.
 	 * @return A string of binary that represents the hexadecimal parameter.
 	 */
-	public static String ConvertHexToBinary(String hex) {
-		int i = Integer.parseInt(hex);
-		String binary = Integer.toBinaryString(i);
-		return binary;
+	public static String HexToBinary(String hex) {
+		return Integer.toBinaryString(Integer.parseInt(hex, 16));
 	}
 	
 	/**
@@ -23,12 +21,21 @@ public class Utility {
 	 * 
 	 * @param binary
 	 *            The binary string that will be converted to hexadecimal.
-	 * @return A string of hecidecimal that represents the binary parameter.
+	 * @return A string of hexidecimal that represents the binary parameter.
 	 */
-	public static String ConvertBinaryToHex(String binary) {
-		int i = Integer.parseInt(binary);
-		String hex = Integer.toHexString(i);
-		return hex;
+	public static String BinaryToHex(String binary) {
+		return Integer.toHexString(Integer.parseInt(binary, 2)).toUpperCase();
 	}
 
+	/**
+	 * Converts from a hex string to a decimal value.
+	 * 
+	 * @param hex
+	 *            The hexadecimal string that will be converted to base 10.
+	 * @return An integer that represents the hexadecimal parameter.
+	 */
+	public static Integer HexToDecimalValue(String hex) {
+		return Integer.parseInt(hex, 16);
+	}
+	
 }
