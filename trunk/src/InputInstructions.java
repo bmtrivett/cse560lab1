@@ -30,11 +30,9 @@ public class InputInstructions {
 	 * @throws IOException
 	 *             Takes in the Input file and makes an array of all the memory.
 	 */
-	public static String FindFile(String[] args) throws IOException {
+	public static String FindFile(String input) throws IOException {
 
 		int counter = 1;
-
-		String input = "";
 
 		File inputFile = new File(input);
 		boolean fileExists = inputFile.exists();
