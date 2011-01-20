@@ -3,7 +3,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 
 /**
- * Provides the functionality to the Wi-11 Machine's components by sending and
+ * Provides the functionality to the Wileven Machine's components by sending and
  * receiving information between the view and the interpreter, loader, and
  * model. Progress the machine's run process is accomplished by successful
  * completion of the action listeners in this order: GetFileLocation,
@@ -25,7 +25,7 @@ public class Controller {
 	private QuietMode quiet;
 	private TraceMode trace;
 	private StepMode step;
-	// private EndOrRestart end;
+	private EndOrRestart end;
 
 	// Consolidate all instruction text.
 	private String getFileInst = "Enter location of file you wish to load:\n";
@@ -33,14 +33,17 @@ public class Controller {
 			+ "A) Choose run mode.\nB) Set instruction limit.\n";
 	private String modeSelectInst = "Select run mode:\n"
 			+ "A) Quiet mode.\nB) Trace mode.\nC) Step mode.\n";
-	private String optionsInst = "New instruction limit (1 to 65536 or -1"
-			+ " for DEFAULT):\n";
+	private String optionsInst = "New instruction limit (1 to 2,147,483,647 "
+			+ "or -1 for DEFAULT):\n";
+	private String endInst = "Execution over, please choose an option:\n"
+			+ "A) Load another file.\n" + "B) Reset Wileven Machine.\n"
+			+ "C) Quit.\n";
 
 	// Add this before to options instructions for dynamic behavior:
 	// "CURRENT: " + MachineMain.machineModel.instructionLimit + '\n' +
 
 	/**
-	 * Constructor for the Wi-11 Machine controller.
+	 * Constructor for the Wileven Machine controller.
 	 */
 	public Controller() {
 		// Designate first action listener.
@@ -54,7 +57,7 @@ public class Controller {
 		quiet = new QuietMode();
 		trace = new TraceMode();
 		step = new StepMode();
-		// end = new EndOrRestart();
+		end = new EndOrRestart();
 
 		// Output first instruction to user.
 		MachineMain.machineView.outputText(getFileInst);
@@ -76,8 +79,7 @@ public class Controller {
 	 * An action listener that takes the user input in the text field of the
 	 * View and sends it to the loader. If the loader doesn't return an error,
 	 * then the action listener is changed to the next step in the program
-	 * process, RunOrSetOptions, and the loader is told to load the specified
-	 * file into memory.
+	 * process, RunOrSetOptions.
 	 * 
 	 * @author Ben Trivett
 	 */
@@ -87,8 +89,12 @@ public class Controller {
 			String text = MachineMain.machineView.getInput();
 
 			// Send the input to the loader.
-			// TODO: GET LOADER TO MAKE THIS METHOD.
-			String getFileError = null;// = InputInstructions.FindFile(text);
+			String getFileError;
+			try {
+				getFileError = InputInstructions.FindFile(text);
+			} catch (IOException e1) {
+				getFileError = "An error has occurred while loading this file.";
+			}
 
 			// Check if the loader returned an error finding the file.
 			if (getFileError != null) {
@@ -96,10 +102,8 @@ public class Controller {
 				MachineMain.machineView.showError(getFileError);
 				MachineMain.machineView.outputText(getFileInst);
 			} else {
-				// If no error run loader, output new instructions, and change
-				// action listener to run or options.
-				// TODO: GET LOADER TO MAKE THIS METHOD.
-				// InputInstructions.Load();
+				// If no error output new instructions and change
+				// action listener to next.
 				MachineMain.machineView.outputText("Loading: ");
 				echoInput();
 				MachineMain.machineView.outputText(runOrOptionsInst);
@@ -199,7 +203,7 @@ public class Controller {
 			}
 		}
 	}
-	
+
 	/**
 	 * An action listener that takes the user input in the text field of the
 	 * View and decides what mode to run the program in.
@@ -241,9 +245,28 @@ public class Controller {
 	 */
 	private class QuietMode implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			String text = MachineMain.machineView.getInput();
-			MachineMain.machineView.outputText(text + '\n');
-			MachineMain.machineView.clearInputField();
+			MachineMain.machineView.outputText("Executing...\n");
+			// Tell the interpreter to run in quiet mode.
+			String executeError;
+			String instName;
+			Integer[] memAltered = new Integer[5];
+			Integer[] regAltered = new Integer[5];
+			// try {
+			executeError = null;// ExecuteAnInstruction(instName, memAltered[], regAltered[]);
+			// } catch (IOException e1) {
+			// getFileError = "An error has occurred while loading this file.";
+			// }
+
+			// Check if the loader returned an error finding the file.
+			if (executeError != null) {
+				MachineMain.machineView.showError(executeError);
+				MachineMain.machineView.outputText(executeError);
+			} else {
+				// If no error output new instructions and change
+				// action listener to next.
+				MachineMain.machineView.outputText("Success!\n");
+				MachineMain.machineView.setListener(quiet, end);
+			}
 		}
 	}
 
@@ -275,4 +298,35 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * An action listener that takes the user input in the text field of the
+	 * View and either changes the action listener to GetFileLocation, restarts
+	 * the Wileven Machine, or exits.
+	 * 
+	 * @author Ben Trivett
+	 */
+	private class EndOrRestart implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// Take in the input.
+			String text = MachineMain.machineView.getInput();
+			echoInput();
+
+			if (text.equals("a") || text.equals("A")) {
+				// Display instructions and change action listener to getFile
+				MachineMain.machineView.outputText(getFileInst);
+				MachineMain.machineView.setListener(end, getFile);
+			} else if (text.equals("b") || text.equals("B")) {
+				// Restart Wileven Machine
+				MachineMain.Reset();
+			} else if (text.equals("c") || text.equals("C")) {
+				// Close Wileven Machine
+				System.exit(0);
+			} else {
+				// Display error and instructions again.
+				MachineMain.machineView
+						.showError("Invalid response. Valid responses: A, B, C");
+				MachineMain.machineView.outputText(endInst);
+			}
+		}
+	}
 }
