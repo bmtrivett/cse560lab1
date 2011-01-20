@@ -4,8 +4,6 @@ import java.util.Map;
 import java.io.*;
 
 
-
-
 /**
  * To put the input information into the data structures that represent the
  * memory and registers of the machine.
