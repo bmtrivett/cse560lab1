@@ -1,3 +1,5 @@
+import java.util.Map;
+
 /** 
  * This class will parse through the given Instructions
  * @author GerardLouis
@@ -16,7 +18,7 @@ public class instructionParser {
 	 * last three hex digits of the word being parsed through.
 	 */
 	public String binaryRepOfLastThreeHexDigits = null;
-	
+		
 	private static boolean ADD(
 			String binaryRep,
 			int[] CCR,
@@ -24,21 +26,20 @@ public class instructionParser {
 	) {
 		String DR = binaryRep.substring(0, 2);
 		String SR1 = binaryRep.substring(3, 5);
-		int temp1 = interpreterUtility.decodeEntireMemoryLocation(
+		int temp1 = Utility.HexToDecimalValue(
 				gpRegisters[Integer.parseInt(SR1, 2)]);
+		int temp2 = 0;
 		if (binaryRep.charAt(6) == '0') {
 			String SR2 = binaryRep.substring(9);
-			int temp2 = interpreterUtility.decodeEntireMemoryLocation(
+			temp2 = Utility.HexToDecimalValue(
 					gpRegisters[Integer.parseInt(SR2, 2)]);
-			gpRegisters[Integer.parseInt(DR, 2)] = Integer.toString(temp1+temp2);
 		}
 		// Working on sign extension
 		else {
 			String imm5 = binaryRep.substring(7);
-			int temp2 = interpreterUtility.decodeEntireMemoryLocation(
-					gpRegisters[Integer.parseInt(imm5, 2)]);
-			
+			temp2 = interpreterUtility.signExtendBinaryString(imm5);
 		}
+		gpRegisters[Integer.parseInt(DR, 2)] = Integer.toString(temp1+temp2);
 		// Boolean value to indicate success?
 		return true;
 	}
@@ -48,11 +49,11 @@ public class instructionParser {
 	 * @param instruction
 	 */
 	public void parse(
-			String instruction,
+			Map<Integer, String> registerMap,
+			String[] memoryArray,
+			Integer[] conditionCodeRegisters,
 			int programCounter,
-			String[] memoryLength,
-			int[] CCR,
-			String[] gpRegisters
+			String instruction
 	) {
 		this.englishInstruction = 
 			interpreterUtility.decodeFirstHexDigit(instruction);
