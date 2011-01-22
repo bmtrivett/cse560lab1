@@ -38,10 +38,18 @@ public class InputInstructions {
 		FileReader reader = new FileReader(input);
 		BufferedReader file = new BufferedReader(reader);
 		read = file.readLine();
+		if (read.charAt(0) != 'H') {
+			return "The header record is incorrect in the file please try a new file.";
+		}
+		
 		while (count < 15) {
 			int i = 0;
 			char ch = read.charAt(i);
 			if (Character.isLowerCase(ch) || ch == ' ') {
+				return "The header record is incorrect in the file please try a new file.";
+			}
+			if ( ch >= 'F' )
+			{
 				return "The header record is incorrect in the file please try a new file.";
 			}
 			i++;
@@ -94,6 +102,9 @@ public class InputInstructions {
 			// if it E blow up
 			if (read.substring(0, 1).equals("E")) {
 				break;
+			}
+			if (read.charAt(0) != 'T') {
+				return "The text record is incorrect in the file please try a new file.";
 			}
 
 			if (read.length() != 9) {
