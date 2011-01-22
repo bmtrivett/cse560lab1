@@ -67,9 +67,6 @@ public class InputInstructions {
 		String startValue = firstLine.substring(7, 11);
 		String memorySize = firstLine.substring(posOfInstr, 15);
 
-		if (memorySize == "0000") {
-			return "The header record is incorrect in the file please try a new file.";
-		}
 
 		// converts the hex to figure out how many memory spaces there are.
 		int decValueMem = Integer.parseInt(memorySize, 16);
