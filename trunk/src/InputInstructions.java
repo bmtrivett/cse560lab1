@@ -80,6 +80,11 @@ public class InputInstructions {
 				if (Character.isLowerCase(ch) || ch == ' ') {
 					return "The text record is incorrect in the file please try a new file.";
 				}
+				
+				if ( ch >= 'F' )
+				{
+					return "The text record is incorrect in the file please try a new file.";
+				}
 				i++;
 				count++;
 			}
