@@ -43,11 +43,7 @@ public class InputInstructions {
 		{
 			int i = 0;
 			char ch = read.charAt(i);
-			if(Character.isLowerCase(ch))
-			{
-				return "The header record is incorrect in the file please try a new file.";
-			}
-			else if(ch == ' ')
+			if(Character.isLowerCase(ch) || ch == ' ')
 			{
 				return "The header record is incorrect in the file please try a new file.";
 			}
