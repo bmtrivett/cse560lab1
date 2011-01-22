@@ -22,8 +22,8 @@ public class Model {
 	public Map<Integer, String> registerMap;
 
 	/**
-	 * This array of integers will have a length of 3 and each integer may have
-	 * a value of 0 or 1.
+	 * The map will store a character denoting the CCR and the associated
+	 * boolean is the state of that register.
 	 */
 	public Map<Character, Boolean> conditionCodeRegisters;
 
@@ -51,8 +51,8 @@ public class Model {
 
 	/**
 	 * The potentially user-defined instance of the maximum number of
-	 * instructions allowed to be executed. Defined in the controller to be
-	 * 1 to 2,147,483,647, or the default.
+	 * instructions allowed to be executed. Defined in the controller to be 1 to
+	 * 2,147,483,647, or the default.
 	 */
 	public Integer instructionLimit;
 
@@ -64,6 +64,12 @@ public class Model {
 		conditionCodeRegisters = new HashMap<Character, Boolean>();
 		memoryArray = new String[65536];
 		instructionLimit = DEFAULT_INSTRUCTION_LIMIT;
+		conditionCodeRegisters.put('N', false);
+		conditionCodeRegisters.put('Z', false);
+		conditionCodeRegisters.put('P', false);
+		for (int i = 0; i < 8; i++) {
+			registerMap.put(i, "0000");
+		}
 	}
 
 }
