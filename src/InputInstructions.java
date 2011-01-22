@@ -30,7 +30,8 @@ public class InputInstructions {
 	 */
 	public static String FindFile(String input) throws IOException {
 
-		int counter = 1;
+		int count = 0;
+		
 
 		File inputFile = new File(input);
 		boolean fileExists = inputFile.exists();
@@ -43,6 +44,20 @@ public class InputInstructions {
 		FileReader reader = new FileReader(input);
 		BufferedReader file = new BufferedReader(reader);
 		read = file.readLine();
+		while(count < 15)
+		{
+			int i = 0;
+			char ch = read.charAt(i);
+			if(Character.isLowerCase(ch))
+			{
+				return "The header record is incorrect in the file please try a new file.";
+			}
+			else if(ch == ' ')
+			{
+				return "The header record is incorrect in the file please try a new file.";
+			}
+			i++;
+		}
 		if (read.length() != 15) {
 			return "The header record is incorrect in the file please try a new file.";
 		}
@@ -51,6 +66,10 @@ public class InputInstructions {
 		// cuts off the last four hex characters.
 		String startValue = firstLine.substring(7, 12);
 		String memorySize = firstLine.substring(posOfInstr);
+		if(memorySize == "0000")
+		{
+			return "The header record is incorrect in the file please try a new file.";
+		}
 
 		// converts the hex to figure out how many memory spaces there are.
 		int decValueMem = Integer.parseInt(memorySize, 16);
@@ -60,7 +79,22 @@ public class InputInstructions {
 		// while the file still has input read every line and put it into an
 		// array
 		while (read != null) {
+			int counter = 1;
 			read = file.readLine();
+			while(count < 9)
+			{
+				int i = 0;
+				char ch = read.charAt(i);
+				if(Character.isLowerCase(ch))
+				{
+					return "The text record is incorrect in the file please try a new file.";
+				}
+				else if(ch == ' ')
+				{
+					return "The text record is incorrect in the file please try a new file.";
+				}
+				i++;
+			}
 			// if it E blow up
 			if (read.substring(0) == "e") {
 				break;
@@ -75,6 +109,7 @@ public class InputInstructions {
 			String textInstructions = read.toString();
 			String memoryPos = textInstructions.substring(2, 4);
 			int decMemPos = Integer.parseInt(memoryPos, 16);
+			
 			if (decTotalMem < decMemPos) {
 				return "The value is out of the allocated memory.";
 			}
