@@ -95,6 +95,10 @@ public class InputInstructions {
 				}
 				i++;
 			}
+			if(read.charAt(0) == '\n')
+			{
+				return "The text record is incorrect in the file please try a new file.";
+			}
 			// if it E blow up
 			if (read.substring(0) == "e") {
 				break;
