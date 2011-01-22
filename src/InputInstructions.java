@@ -3,7 +3,6 @@ import java.util.Map;
 
 import java.io.*;
 
-
 /**
  * To put the input information into the data structures that represent the
  * memory and registers of the machine.
@@ -39,12 +38,10 @@ public class InputInstructions {
 		FileReader reader = new FileReader(input);
 		BufferedReader file = new BufferedReader(reader);
 		read = file.readLine();
-		while(count < 15)
-		{
+		while (count < 15) {
 			int i = 0;
 			char ch = read.charAt(i);
-			if(Character.isLowerCase(ch) || ch == ' ')
-			{
+			if (Character.isLowerCase(ch) || ch == ' ') {
 				return "The header record is incorrect in the file please try a new file.";
 			}
 			i++;
@@ -61,9 +58,8 @@ public class InputInstructions {
 
 		String startValue = firstLine.substring(7, 11);
 		String memorySize = firstLine.substring(posOfInstr, 15);
-		
-		if(memorySize == "0000")
-		{
+
+		if (memorySize == "0000") {
 			return "The header record is incorrect in the file please try a new file.";
 		}
 
@@ -78,19 +74,16 @@ public class InputInstructions {
 			int counter = 2;
 			count = 0;
 			read = file.readLine();
-			while(count < 9)
-			{
+			while (count < 9) {
 				int i = 0;
 				char ch = read.charAt(i);
-				if(Character.isLowerCase(ch) || ch == ' ')
-				{
+				if (Character.isLowerCase(ch) || ch == ' ') {
 					return "The text record is incorrect in the file please try a new file.";
 				}
 				i++;
 				count++;
 			}
-			if(read.charAt(0) == '\n')
-			{
+			if (read.charAt(0) == '\n') {
 				return "The text record is incorrect in the file please try a new file.";
 			}
 			// if it E blow up
@@ -108,11 +101,10 @@ public class InputInstructions {
 			String memoryPos = textInstructions.substring(1, 5);
 			int decMemPos = Integer.parseInt(memoryPos, 16);
 
-			if (decMemPos >= decTotalMem || decMemPos < decValueStart) 
-			{
+			if (decMemPos >= decTotalMem || decMemPos < decValueStart) {
 				return "The value is out of the allocated memory.";
 			}
-			
+
 			String textData = textInstructions.substring(5, 9);
 
 			// convert memory to pos in array then add it
@@ -120,7 +112,7 @@ public class InputInstructions {
 			counter++;
 		}
 		// Set the program counter to the first line to be executed.
-		MachineMain.machineModel.programCounter = read.substring(1,5);
+		MachineMain.machineModel.programCounter = read.substring(1, 5);
 		return null;
 	}
 
