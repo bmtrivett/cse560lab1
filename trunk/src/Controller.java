@@ -38,6 +38,7 @@ public class Controller {
 	private String endInst = "Execution over, please choose an option:\n"
 			+ "A) Load another file.\n" + "B) Reset Wileven Machine.\n"
 			+ "C) Quit.\n";
+	private String quietInst = "Press enter to start ";
 
 	// Add this before to options instructions for dynamic behavior:
 	// "CURRENT: " + MachineMain.machineModel.instructionLimit + '\n' +
@@ -158,7 +159,7 @@ public class Controller {
 			String text = MachineMain.machineView.getInput();
 			echoInput();
 
-			// Check if input was blank, if so set instruction limit to default
+			// Check if input was -1, if so set instruction limit to default
 			// and return to previous action listener.
 			if (text.equals("-1")) {
 				MachineMain.machineModel.instructionLimit = Model.DEFAULT_INSTRUCTION_LIMIT;
@@ -177,7 +178,7 @@ public class Controller {
 				if (!errorExists) {
 					int newInstructionLimit = Integer.parseInt(text);
 					if (newInstructionLimit >= 1
-							&& newInstructionLimit <= 65536) {
+							&& newInstructionLimit <= Integer.MAX_VALUE) {
 						// Set new instruction limit, display instructions and
 						// change action listener to run or options.
 						MachineMain.machineModel.instructionLimit = newInstructionLimit;
@@ -187,7 +188,7 @@ public class Controller {
 					} else {
 						// Display error and instructions again.
 						MachineMain.machineView
-								.showError("Invalid response. Valid responses: 1 to 65536, -1");
+								.showError("Invalid response. Valid responses: 1 to 2,147,483,647, -1");
 						MachineMain.machineView.outputText("CURRENT: "
 								+ MachineMain.machineModel.instructionLimit
 								+ '\n' + optionsInst);
@@ -195,7 +196,7 @@ public class Controller {
 				} else {
 					// Display error and instructions again.
 					MachineMain.machineView
-							.showError("Invalid response. Valid responses: 1 to 65536, -1");
+							.showError("Invalid response. Valid responses: 1 to 2,147,483,647, -1");
 					MachineMain.machineView.outputText("CURRENT: "
 							+ MachineMain.machineModel.instructionLimit + '\n'
 							+ optionsInst);
@@ -218,7 +219,8 @@ public class Controller {
 
 			if (text.equals("a") || text.equals("A")) {
 				// Display instructions and change action listener to quiet
-				// MachineMain.machineView.outputText(quietInst);
+				MachineMain.machineView.outputText(quietInst
+						+ MachineMain.machineModel.programName + ".\n");
 				MachineMain.machineView.setListener(modeSelect, quiet);
 			} else if (text.equals("b") || text.equals("B")) {
 				// Display instructions and change action listener to trace
@@ -251,22 +253,31 @@ public class Controller {
 			String instName;
 			Integer[] memAltered = new Integer[5];
 			Integer[] regAltered = new Integer[5];
-			// try {
-			executeError = null;// ExecuteAnInstruction(instName, memAltered[], regAltered[]);
-			// } catch (IOException e1) {
-			// getFileError = "An error has occurred while loading this file.";
-			// }
+			int instructionCount = 0;
+			while (instructionCount < MachineMain.machineModel.instructionLimit) {
+				// try {
+				executeError = null;// ExecuteAnInstruction(instName,
+									// memAltered[],
+									// regAltered[]);
+				// } catch (IOException e1) {
+				// getFileError =
+				// "An error has occurred while loading this file.";
+				// }
 
-			// Check if the loader returned an error finding the file.
-			if (executeError != null) {
-				MachineMain.machineView.showError(executeError);
-				MachineMain.machineView.outputText(executeError);
-			} else {
-				// If no error output new instructions and change
-				// action listener to next.
-				MachineMain.machineView.outputText("Success!\n");
-				MachineMain.machineView.setListener(quiet, end);
+				// Check if the loader returned an error finding the file.
+				if (executeError != null) {
+					MachineMain.machineView.outputText(executeError + '\n');
+				}
+				// End execution when the halt instruction occurs.
+				// if (instName.equals("HALT")){
+				break;
+				// }
+				// instructionCount++;
 			}
+			// Output new instructions and change action listener to end.
+			MachineMain.machineView.outputText('\n' + endInst);
+			MachineMain.machineView.setListener(quiet, end);
+
 		}
 	}
 
@@ -317,6 +328,7 @@ public class Controller {
 				MachineMain.machineView.setListener(end, getFile);
 			} else if (text.equals("b") || text.equals("B")) {
 				// Restart Wileven Machine
+				MachineMain.machineView.dispose();
 				MachineMain.Reset();
 			} else if (text.equals("c") || text.equals("C")) {
 				// Close Wileven Machine

@@ -17,10 +17,6 @@ public class InputInstructions {
 	 * A magic number to be used within the program.
 	 */
 	private final static int posOfInstr = 11;
-	/**
-	 * The map will store an integer and the string of hex for the registers.
-	 */
-	public static final Map<Integer, String> myMap = new HashMap<Integer, String>();
 
 	/**
 	 * 
@@ -31,7 +27,6 @@ public class InputInstructions {
 	public static String FindFile(String input) throws IOException {
 
 		int count = 0;
-		
 
 		File inputFile = new File(input);
 		boolean fileExists = inputFile.exists();
@@ -57,15 +52,20 @@ public class InputInstructions {
 				return "The header record is incorrect in the file please try a new file.";
 			}
 			i++;
+			count++;
 		}
 		if (read.length() != 15) {
 			return "The header record is incorrect in the file please try a new file.";
 		}
 		// gets just the first line.
 		String firstLine = read.toString();
+		// Stores the program name.
+		MachineMain.machineModel.programName = firstLine.substring(1, 7);
 		// cuts off the last four hex characters.
-		String startValue = firstLine.substring(7, 12);
-		String memorySize = firstLine.substring(posOfInstr);
+
+		String startValue = firstLine.substring(7, 11);
+		String memorySize = firstLine.substring(posOfInstr, 15);
+		
 		if(memorySize == "0000")
 		{
 			return "The header record is incorrect in the file please try a new file.";
@@ -79,28 +79,26 @@ public class InputInstructions {
 		// while the file still has input read every line and put it into an
 		// array
 		while (read != null) {
-			int counter = 1;
+			int counter = 2;
+			count = 0;
 			read = file.readLine();
 			while(count < 9)
 			{
 				int i = 0;
 				char ch = read.charAt(i);
-				if(Character.isLowerCase(ch))
-				{
-					return "The text record is incorrect in the file please try a new file.";
-				}
-				else if(ch == ' ')
+				if(Character.isLowerCase(ch) || ch == ' ')
 				{
 					return "The text record is incorrect in the file please try a new file.";
 				}
 				i++;
+				count++;
 			}
 			if(read.charAt(0) == '\n')
 			{
 				return "The text record is incorrect in the file please try a new file.";
 			}
 			// if it E blow up
-			if (read.substring(0) == "e") {
+			if (read.substring(0, 1).equals("E")) {
 				break;
 			}
 
@@ -111,22 +109,22 @@ public class InputInstructions {
 				return "There are more text record than expected.";
 			}
 			String textInstructions = read.toString();
-			String memoryPos = textInstructions.substring(2, 4);
+			String memoryPos = textInstructions.substring(1, 5);
 			int decMemPos = Integer.parseInt(memoryPos, 16);
+
+			if (decMemPos >= decTotalMem || decMemPos < decValueStart) 
+			{
+				return "The value is out of the allocated memory.";
+			}
 			
-			if (decTotalMem < decMemPos) {
-				return "The value is out of the allocated memory.";
-			}
-			if (decValueMem > decMemPos) {
-				return "The value is out of the allocated memory.";
-			}
-			String textData = textInstructions.substring(4);
-			int pos = Integer.parseInt(memoryPos, 16);
+			String textData = textInstructions.substring(5, 9);
 
 			// convert memory to pos in array then add it
-			MachineMain.machineModel.memoryArray[pos] = textData;
+			MachineMain.machineModel.memoryArray[decMemPos] = textData;
 			counter++;
 		}
+		// Set the program counter to the first line to be executed.
+		MachineMain.machineModel.programCounter = read.substring(1,5);
 		return null;
 	}
 

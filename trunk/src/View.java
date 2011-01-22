@@ -39,6 +39,7 @@ public class View extends JFrame {
 				DEFAULT_CONSOLE_WIDTH);
 		outputField.setEditable(false); // Default is editable
 		JScrollPane consolePane = new JScrollPane(outputField);
+		
 
 		// Put display objects in a container and lay them out.
 		JPanel content = new JPanel();
