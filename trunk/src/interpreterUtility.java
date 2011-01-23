@@ -21,7 +21,7 @@ public class interpreterUtility {
 		//String substring = word.substring(1);
 		//int baseTen = interpreterUtility.decodeEntireMemoryLocation(substring);
 		//return Integer.toBinaryString(baseTen);
-		return Utility.HexToBinary(word.substring((word.length()-3)));
+		return Utility.HexToBinary(word.substring((word.length()-3))).substring(4);
 	}
 	
 	/**

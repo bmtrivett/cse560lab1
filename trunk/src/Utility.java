@@ -6,18 +6,23 @@
 public class Utility {
 
 	/**
-	 * Converts from a hex string to a binary string.
+	 * Converts from a hex string to a 2's complement binary string.
 	 * 
 	 * @param hex
 	 *            The hexadecimal string that will be converted to binary.
-	 * @return A string of binary that represents the hexadecimal parameter.
+	 * @return A string of binary of length 16 that represents the hexadecimal
+	 *         parameter.
 	 */
 	public static String HexToBinary(String hex) {
-		return Integer.toBinaryString(Integer.parseInt(hex, 16));
+		String binString = Integer.toBinaryString(Integer.parseInt(hex, 16));
+		while (binString.length() < 16) {
+			binString = "0" + binString;
+		}
+		return binString;
 	}
 
 	/**
-	 * Converts from a binary string to a hex string.
+	 * Converts from a 2's complement binary string to a hex string.
 	 * 
 	 * @param binary
 	 *            The binary string that will be converted to hexadecimal.

@@ -590,7 +590,7 @@ public class Controller {
 													.DecimalValueToHex(regAltered[counter])
 											+ "             \t\t"
 											+ MachineMain.machineModel.registerMap
-													.get(memAltered[counter])
+													.get(regAltered[counter])
 											+ '\n');
 
 							counter++;
@@ -601,11 +601,9 @@ public class Controller {
 						MachineMain.machineView
 								.outputText("\n\tCondition Code Registers:\tN\tZ\tP\n");
 						MachineMain.machineView
-								.outputText("\t\t\t\t-\t-\t-\n");
+								.outputText("\t\t\t-\t-\t-\n");
 						MachineMain.machineView
-								.outputText('\t'
-										+ MachineMain.machineModel.programCounter
-										+ "\t                         \t"
+								.outputText("\t\t                         \t"
 										+ Utility
 												.BooleanToString(MachineMain.machineModel.conditionCodeRegisters
 														.get('N'))
