@@ -773,9 +773,28 @@ public class instructionCases {
 			String binaryRep
 	) {
 		String result = programCounter;
-		if (conditionCodeRegisters.get('N') == true || 
-				conditionCodeRegisters.get('Z') == true || 
-				conditionCodeRegisters.get('P') == true) {
+		// Create boolean jump and set to false.
+		boolean jump = false;
+		// Check if incoming binaryRep has N bit set and if so,
+		// check if CCR has N bit set. If both are set, then set
+		// jump to true. Repeat for Z and P bits.
+		if (binaryRep.charAt(0) == '1') {
+			if (conditionCodeRegisters.get('N') == true) {
+				jump = true;
+			}
+		}
+		if (binaryRep.charAt(1) == '1') {
+			if (conditionCodeRegisters.get('Z') == true) {
+				jump = true;
+			}
+		}
+		if (binaryRep.charAt(2) == '1') {
+			if (conditionCodeRegisters.get('P') == true) {
+				jump = true;
+			}
+		}
+		// If boolean jump is true, then return modified programCounter.
+		if (jump) {
 			
 			// Store first 6 digits of binary conversion of programCounter
 			// in string result. Then concatenate result and last 9 digits
