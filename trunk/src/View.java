@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -97,6 +98,19 @@ public class View extends JFrame {
 	public void setListener(ActionListener old, ActionListener current) {
 		inputField.removeActionListener(old);
 		inputField.addActionListener(current);
+	}
+	
+	/**
+	 * Replaces the key listener for the text field.
+	 * 
+	 * @param old
+	 *            The key listener to be removed.
+	 * @param current
+	 *            The key listener to be added.
+	 */
+	public void setKeyListener(KeyListener old, KeyListener current) {
+		inputField.removeKeyListener(old);
+		inputField.addKeyListener(current);
 	}
 
 	/**

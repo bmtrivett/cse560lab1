@@ -203,7 +203,7 @@ public class instructionCases {
 		registerMap.put((Integer.parseInt(DR, 2)), 
 				Utility.BinaryToHex(result.toString()));
 		registerChanges[0] = Integer.parseInt(DR, 2);
-		return "";
+		return null;
 	}
 	
 	/**
@@ -283,7 +283,7 @@ public class instructionCases {
 		registerMap.put((Integer.parseInt(DR, 2)), 
 				Utility.BinaryToHex(result.toString()));
 		registerChanges[0] = Integer.parseInt(DR, 2);
-		return "";
+		return null;
 	}
 	
 	/**
@@ -347,7 +347,7 @@ public class instructionCases {
 		registerMap.put((Integer.parseInt(DR, 2)), 
 				Utility.BinaryToHex(result.toString()));
 		registerChanges[0] = Integer.parseInt(DR, 2);
-		return "";
+		return null;
 	}
 	
 	/**
@@ -424,7 +424,7 @@ public class instructionCases {
 		registerMap.put((Integer.parseInt(DR, 2)), 
 				Utility.BinaryToHex(result.toString()));
 		registerChanges[0] = Integer.parseInt(DR, 2);
-		return "";
+		return null;
 	}
 	
 	/**
@@ -504,7 +504,7 @@ public class instructionCases {
 		registerMap.put((Integer.parseInt(DR, 2)), 
 				Utility.BinaryToHex(result.toString()));
 		registerChanges[0] = Integer.parseInt(DR, 2);
-		return "";
+		return null;
 	}
 	
 	/**
@@ -570,7 +570,7 @@ public class instructionCases {
 		registerMap.put((Integer.parseInt(DR, 2)), 
 				Utility.BinaryToHex(result.toString()));
 		registerChanges[0] = Integer.parseInt(DR, 2);
-		return "";
+		return null;
 	}
 	
 	/**
@@ -632,7 +632,7 @@ public class instructionCases {
 		// Put memory location that is changed into memoryChanges and 
 		// return a blank string.
 		memoryChanges[0] = Utility.BinaryToHex(result);
-		return "";
+		return null;
 	}
 	
 	/**
@@ -699,7 +699,7 @@ public class instructionCases {
 		// Put memory location that is changed into memoryChanges and 
 		// return a blank string.
 		memoryChanges[0] = Utility.BinaryToHex(result);
-		return "";
+		return null;
 	}
 	
 	/**
@@ -749,7 +749,7 @@ public class instructionCases {
 		// Put memory location that is changed into memoryChanges and 
 		// return a blank string.
 		memoryChanges[0] = Integer.toHexString(numresult);
-		return "";
+		return null;
 	}
 	
 	/**

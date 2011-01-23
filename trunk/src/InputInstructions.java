@@ -42,17 +42,13 @@ public class InputInstructions {
 			return "The header record is incorrect in the file please try a new file.";
 		}
 		
+		count = 0;
 		while (count < 15) {
-			int i = 0;
-			char ch = read.charAt(i);
-			if (Character.isLowerCase(ch) || ch == ' ') {
+			char ch = read.charAt(count);
+			if (Character.isLowerCase(ch) || ch == ' ')
+			{
 				return "The header record is incorrect in the file please try a new file.";
 			}
-			//if ( ch >= 'F' )
-			//{
-				//return "The header record is incorrect in the file please try a new file.";
-			//}
-			i++;
 			count++;
 		}
 		if (read.length() != 15) {
@@ -77,28 +73,23 @@ public class InputInstructions {
 		// array
 		while (read != null) {
 			int counter = 2;
-			count = 0;
+			
 			read = file.readLine();
-			while (count < 9) {
-				int i = 0;
-				char ch = read.charAt(i);
-				if (Character.isLowerCase(ch) || ch == ' ') {
-					return "The text record is incorrect in the file please try a new file.";
-				}
-				
-				//if ( ch >= 'F' )
-				//{
-					//return "The text record is incorrect in the file please try a new file.";
-				//}
-				i++;
-				count++;
-			}
+			
 			if (read.charAt(0) == '\n') {
 				return "The text record is incorrect in the file please try a new file.";
 			}
 			// if it E blow up
 			if (read.substring(0, 1).equals("E")) {
 				break;
+			}
+			count = 0;
+			while (count < 9) {
+				char ch = read.charAt(count);
+				if (Character.isLowerCase(ch) || ch == ' ') {
+					return "The text record is incorrect in the file please try a new file.";
+				}
+				count++;
 			}
 			if (read.charAt(0) != 'T') {
 				return "The text record is incorrect in the file please try a new file.";
