@@ -7,38 +7,24 @@ import java.util.Map;
  *
  */
 public class Interpreter {
-
+	
 	/**
-	 * The map will store an integer denoting the register number and the string
-	 * of hex for the registers.
+	 * This instructionParser object will have the instruction that
+	 * is to be executed passed in to it in order to be parsed.
 	 */
-	public Map<Integer, String> registerMap;
-
-	/**
-	 * The entire abstract machine's memory. Each string in the array will have
-	 * a length of 4, representing the hex value stored there.
-	 */
-	public String[] memoryArray;
-
-	/**
-	 * This array of integers will have a length of 3 and each integer
-	 * may have a value of 0 or 1.
-	 */
-	public Map<Character, Boolean> conditionCodeRegisters;
-
-	/**
-	 * This string of four characters will have the start value
-	 * of the instructions in hex.
-	 */
-	public String hexStartValue;
-
-	/**
-	 * This integer will have the location in the array of the
-	 * next instruction.
-	 */
-	public String programCounter;
-
 	public instructionParser parserOfInstructions;
+	
+	/**
+	 * This array will have the memory locations that are changed
+	 * within an instruction (if any).
+	 */
+	public String[] memoryChanges;
+	
+	/**
+	 * This array will have the registers that have been modified
+	 * within an instruction (if any).
+	 */
+	public Integer[] registerChanges;
 	
 	/**
 	 * This constructor initiates an Instructor object.
@@ -47,31 +33,37 @@ public class Interpreter {
 	 * @param hexStartValue This value will have the starting point 
 	 */
 	public Interpreter (
-			Map<Integer, String> registerMap,
-			String[] memoryArray,
-			Map<Character, Boolean> conditionCodeRegisters,
-			String hexStartValue
+			String[] memoryChanges,
+			Integer[] registerChanges
 	) {
-		this.registerMap = registerMap;
-		this.memoryArray = memoryArray;
-		this.conditionCodeRegisters = conditionCodeRegisters;
-		this.hexStartValue = hexStartValue;
-		this.programCounter = hexStartValue;
+		this.memoryChanges = memoryChanges;
+		this.registerChanges = registerChanges;
 		this.parserOfInstructions = new instructionParser();
 	}
 
-	public String ExecuteAllInstructions() {
-		while (this.memoryArray[this.programCounter].charAt(0) != 'F' && 
-				this.memoryArray[this.programCounter].charAt(2) != '2' && 
-				this.memoryArray[this.programCounter].charAt(3) != '5') {
-			String instruction = this.memoryArray[this.programCounter];
-			this.programCounter++;
-			this.parserOfInstructions.parse(
-					this.registerMap,
-					this.memoryArray,
-					this.conditionCodeRegisters,
-					this.programCounter,
-					instruction);
-		}
+	public String ExecuteAnInstruction() {
+		// The decimal value of the programCounter.
+		Integer programCounterDecimal = Utility.HexToDecimalValue(MachineMain.machineModel.programCounter);
+		
+		// Blank string to notify of potential errors. If not blank and longer
+		// than 4 characters, then an error has been encountered.
+		String error = "";
+		
+		// String instruction set to hex value at programCounter position
+		// in memoryArray.
+		String instruction = MachineMain.machineModel.memoryArray[programCounterDecimal];
+		
+		// Then programCounter is incremented and decimal value is updated.
+		MachineMain.machineModel.programCounter = interpreterUtility.IncrementHexValue(MachineMain.machineModel.programCounter); 
+		programCounterDecimal = Utility.HexToDecimalValue(MachineMain.machineModel.programCounter);
+		
+		// Then, parse instruction is run with its return value being stored
+		// in error. Then, error is returned.
+		error = this.parserOfInstructions.parse(
+				instruction,
+				this.memoryChanges,
+				this.registerChanges);
+		return error;
+		
 	}
 }

@@ -8,102 +8,197 @@ import java.util.Map;
 public class instructionParser {
 	
 	/**
-	 * This public field represents the englishInstruction that
-	 * is currently being executed.
-	 */
-	public String englishInstruction = null;
-	
-	/**
-	 * This public field represents the binary representation of the
-	 * last three hex digits of the word being parsed through.
-	 */
-	public String binaryRepOfLastThreeHexDigits = null;
-	
-	/**
-	 * 
-	 * @param registerMap
-	 * @param conditionCodeRegisters
-	 * @param binaryRep
+	 * This method parses the instruction given by the hex string
+	 * instruction. It also increments the programCounter. There are 
+	 * five possible return values for this function:
+	 * <br /> 
+	 * 1.It can return a blank string, which signifies a successful execution. 
+	 * <br /> 
+	 * 2. It can return a string of hex characters (upto 4); this
+	 * signifies a successful operation that has also affected the
+	 * programCounter. 
+	 * <br /> 
+	 * 3. It can return an error message; this will have some indication 
+	 * as to the nature of the error (Trying to access a register not there, 
+	 * accessing an operand not on the same page as the instruction, etc).
+	 * <br />
+	 * 4. It can return a string containing "TRAP" plus 2 Hex digits; in 
+	 * this case, according to the value of the hex digits, a system call 
+	 * will be executed.
+	 * <br />
+	 * 5. It can return a string containing "DBUG"; in this case the GUI will 
+	 * display the contents of the machine registers (PC, general purpose 
+	 * registers, CCRs).
+	 * @param instruction The hex value of the instruction to be parsed.
+	 * @param memoryChanges This array will be written to with the hex value of
+	 * the memory location(s) modified.
+	 * @param registerChanges This array will be written to with the register
+	 * number that was modified.
 	 * @return
 	 */
-	private static boolean ADD(
-			Map<Integer, String> registerMap,
-			Map<Character, Boolean> conditionCodeRegisters,
-			String binaryRep
-			
+	public String parse(
+			String instruction,
+			String[] memoryChanges,
+			Integer[] registerChanges
 	) {
-		String DR = binaryRep.substring(0, 2);
-		String SR1 = binaryRep.substring(3, 5);
-		int SR1Contents = Utility.HexToDecimalValue(
-				registerMap.get(Integer.parseInt(SR1, 2)));
-		int temp2 = 0;
-		if (binaryRep.charAt(6) == '0') {
-			String SR2 = binaryRep.substring(9);
-			temp2 = Utility.HexToDecimalValue(
-					registerMap.get(Integer.parseInt(SR2, 2)));
+		// Create string error and set to a blank string. Also set
+		// binaryRep to the binary representation of the last three hex
+		// digits of instruction string.
+		String error = "";
+		String binaryRep = interpreterUtility.decodeLastThreeHexDigits(instruction);
+		
+		// Have a switch statement to decide which function to use.
+		// In each case assign the return value of the function to error.
+		// In the case of BRx, JSR, JSRR, and RET, also set programCounter
+		// to value of error if in the proper format.
+		switch (instruction.charAt(0)) {
+			case '0':
+			{
+				error = instructionCases.BRx(
+						MachineMain.machineModel.conditionCodeRegisters, 
+						MachineMain.machineModel.programCounter, binaryRep);
+				if (error.length() <= 4) {
+					MachineMain.machineModel.programCounter = error;
+				}
+				break;
+			}	
+			case '1':
+			{
+				error = instructionCases.ADD(
+						MachineMain.machineModel.registerMap, 
+						MachineMain.machineModel.conditionCodeRegisters, binaryRep,
+						registerChanges);
+				break;
+			}
+			case '2':
+			{
+				error = instructionCases.LD(
+						MachineMain.machineModel.registerMap, 
+						MachineMain.machineModel.memoryArray, 
+						MachineMain.machineModel.conditionCodeRegisters, 
+						MachineMain.machineModel.programCounter, binaryRep,
+						registerChanges);
+				break;
+			}
+			case '3':
+			{
+				error = instructionCases.ST(
+						MachineMain.machineModel.registerMap, 
+						MachineMain.machineModel.memoryArray, 
+						MachineMain.machineModel.conditionCodeRegisters, 
+						MachineMain.machineModel.programCounter, binaryRep,
+						memoryChanges);
+				break;
+			}
+			case '4':
+			{
+				error = instructionCases.JSR(
+						MachineMain.machineModel.registerMap, 
+						MachineMain.machineModel.programCounter, binaryRep,
+						registerChanges);
+				if (error.length() <= 4) {
+					MachineMain.machineModel.programCounter = error;
+				}
+				break;
+			}
+			case '5':
+			{
+				error = instructionCases.AND(
+						MachineMain.machineModel.registerMap, 
+						MachineMain.machineModel.conditionCodeRegisters, binaryRep,
+						registerChanges);
+				break;
+			}
+			case '6':
+			{
+				error = instructionCases.LDR(
+						MachineMain.machineModel.registerMap, 
+						MachineMain.machineModel.conditionCodeRegisters, binaryRep,
+						registerChanges);
+				break;
+			}
+			case '7':
+			{
+				error = instructionCases.STR(
+						MachineMain.machineModel.registerMap, 
+						MachineMain.machineModel.memoryArray, 
+						MachineMain.machineModel.conditionCodeRegisters, binaryRep,
+						memoryChanges);
+				break;
+			}
+			case '8':
+			{
+				error = "DBUG";
+				break;
+			}
+			case '9':
+			{
+				error = instructionCases.NOT(
+						MachineMain.machineModel.registerMap, 
+						MachineMain.machineModel.conditionCodeRegisters, binaryRep,
+						registerChanges);
+				break;
+			}
+			case 'A':
+			{
+				error = instructionCases.LDI(
+						MachineMain.machineModel.registerMap, 
+						MachineMain.machineModel.memoryArray, 
+						MachineMain.machineModel.conditionCodeRegisters, 
+						MachineMain.machineModel.programCounter, binaryRep,
+						registerChanges);
+				break;
+			}
+			case 'B':
+			{
+				error = instructionCases.STI(
+						MachineMain.machineModel.registerMap, 
+						MachineMain.machineModel.memoryArray, 
+						MachineMain.machineModel.conditionCodeRegisters, 
+						MachineMain.machineModel.programCounter, binaryRep,
+						memoryChanges);
+				break;
+			}
+			case 'C':
+			{
+				error = instructionCases.JSRR(
+						MachineMain.machineModel.registerMap, 
+						MachineMain.machineModel.programCounter, binaryRep,
+						registerChanges);
+				if (error.length() <= 4) {
+					MachineMain.machineModel.programCounter = error;
+				}
+				break;
+			}
+			case 'D':
+			{
+				error = instructionCases.RET(
+						MachineMain.machineModel.registerMap);
+				if (error.length() <= 4) {
+					MachineMain.machineModel.programCounter = error;
+				}
+				break;
+			}
+			case 'E':
+			{
+				error = instructionCases.LEA(
+						MachineMain.machineModel.registerMap, 
+						MachineMain.machineModel.conditionCodeRegisters, 
+						MachineMain.machineModel.programCounter, binaryRep,
+						registerChanges);
+				break;
+			}
+			case 'F':
+			{
+				error = instructionCases.TRAP(binaryRep);
+				break;
+			}
+			default:
+			{
+				break;
+			}
 		}
-		else {
-			String imm5 = binaryRep.substring(7);
-			temp2 = interpreterUtility.signExtendBinaryString(imm5);
-		}
-		int result = SR1Contents+temp2;
-		if (result < 0) {
-			conditionCodeRegisters.put('N', true);
-			conditionCodeRegisters.put('Z', false);
-			conditionCodeRegisters.put('P', false);
-		}
-		else if (result > 0) {
-			conditionCodeRegisters.put('N', false);
-			conditionCodeRegisters.put('Z', false);
-			conditionCodeRegisters.put('P', true);
-		}
-		else {
-			conditionCodeRegisters.put('Z', true);
-		}
-		registerMap.put((Integer.parseInt(DR, 2)), (Integer.toString(result)));
-		// Boolean value to indicate success?
-		return true;
-	}
-	
-	private static boolean AND(
-		Map<Integer, String> registerMap,
-		Map<Character, Boolean> conditionCodeRegisters,
-		String binaryRep
-	) {
-		String DR = binaryRep.substring(0, 2);
-		String SR1 = binaryRep.substring(3, 5);
-		String SR1Contents = Utility.HexToBinary(registerMap.get(Integer.parseInt(SR1, 2)));
-		String temp2 = "";
-		if (binaryRep.charAt(6) == '0') {
-			String SR2 = binaryRep.substring(9);
-			temp2 = Utility.HexToBinary(
-					registerMap.get(Integer.parseInt(SR2, 2)));
-		}
-		else {
-			String imm5 = binaryRep.substring(7);
-			temp2 = interpreterUtility.signExtendBinaryString(imm5);
-		}
-		return true;
-	}
-	
-	/**
-	 * 
-	 * @param registerMap
-	 * @param memoryArray
-	 * @param conditionCodeRegisters
-	 * @param programCounter
-	 * @param instruction
-	 */
-	public void parse(
-			Map<Integer, String> registerMap,
-			String[] memoryArray,
-			Map<Character, Boolean> conditionCodeRegisters,
-			int programCounter,
-			String instruction
-	) {
-		this.englishInstruction = 
-			interpreterUtility.decodeFirstHexDigit(instruction);
-		this.binaryRepOfLastThreeHexDigits = 
-			interpreterUtility.decodeLastThreeHexDigits(instruction);
+		// Finally return error string.
+		return error;
 	}
 }
