@@ -321,14 +321,15 @@ public class instructionCases {
 			return "Destination Register out of range.";
 		}
 		
-		// Store first 6 digits of binary conversion of programCounter
+		// Store first 7 digits of binary conversion of programCounter
 		// in string result. Then concatenate result and last 9 digits
 		// of binary rep into result.
-		String result = Utility.HexToBinary(programCounter).substring(0, 6);
+		String result = Utility.HexToBinary(programCounter).substring(0, 7);
+		MachineMain.machineView.outputText('\n'+result +'\n');
 		result = result + binaryRep.substring(3);
-		
+		MachineMain.machineView.outputText(result);
 		// Modify CCRs (if result is negative, set N, etc)
-		if (result.charAt(0) < '1') {
+		if (result.charAt(0) == '1') {
 			conditionCodeRegisters.put('N', true);
 			conditionCodeRegisters.put('Z', false);
 			conditionCodeRegisters.put('P', false);
@@ -345,7 +346,7 @@ public class instructionCases {
 		// Put hex string value of result in DR, put DR
 		// value in registerChanges and return a blank string.
 		registerMap.put((Integer.parseInt(DR, 2)), 
-				Utility.BinaryToHex(result.toString()));
+				Utility.BinaryToHex(result));
 		registerChanges[0] = Integer.parseInt(DR, 2);
 		return null;
 	}
