@@ -13,15 +13,15 @@ import java.io.*;
  */
 public class InputInstructions {
 	/**
-	 * A magic number to be used within the program.
+	 * The position to allocate how many text records are to be read in.
 	 */
-	private final static int posOfInstr = 11;
+	private final static int POS_OF_INT = 11;
 
 	/**
 	 * 
 	 * @param args
 	 * @throws IOException
-	 *             Takes in the Input file and makes an array of all the memory.
+	 *  Takes in the Input file and makes an array of all the memory.
 	 */
 	public static String FindFile(String input) throws IOException {
 
@@ -29,7 +29,7 @@ public class InputInstructions {
 
 		File inputFile = new File(input);
 		boolean fileExists = inputFile.exists();
-		// make catch throws in catch part return stamtment
+
 		if (fileExists == false) {
 			return "The file does not exist. Try another one.";
 		}
@@ -61,7 +61,7 @@ public class InputInstructions {
 		// cuts off the last four hex characters.
 
 		String startValue = firstLine.substring(7, 11);
-		String memorySize = firstLine.substring(posOfInstr, 15);
+		String memorySize = firstLine.substring(POS_OF_INT, 15);
 
 
 		// converts the hex to figure out how many memory spaces there are.
@@ -79,7 +79,7 @@ public class InputInstructions {
 			if (read.charAt(0) == '\n') {
 				return "The text record is incorrect in the file please try a new file.";
 			}
-			// if it E blow up
+		
 			if (read.substring(0, 1).equals("E")) {
 				break;
 			}
