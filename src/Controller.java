@@ -208,9 +208,7 @@ public class Controller {
 			// OUTN: Write the value of R0 to the console as a decimal integer.
 			Integer decimal = Utility.HexToDecimalValue(MachineMain.machineModel.registerMap.get(0));
 			// Convert from 2's complement
-			if (decimal > 32767){
-				decimal = decimal - 65536;
-			}
+			decimal = Utility.convertFromTwosComplement(decimal);
 			MachineMain.machineView.outputText(decimal.toString());
 			pauseForTrapExecution = false;
 		}else if (trapType.equals("33")){
@@ -504,22 +502,22 @@ public class Controller {
 			// Output initial memory contents				
 			displayFull(0);
 			
-			// Create an instance of the interpreter
-			Interpreter interTrace = new Interpreter();
-			
 			// Run the interpreter until the instruction limit is reached.
 			int instructionCount = 0;
 			while (instructionCount < MachineMain.machineModel.instructionLimit) {
 				// Display current program counter contents
-				MachineMain.machineView.outputText("Program Counter: "
+				MachineMain.machineView.outputText("\nProgram Counter: "
 						+ MachineMain.machineModel.programCounter);
 
+				// Create an instance of the interpreter
+				Interpreter interTrace = new Interpreter();
+				
 				// Execute an instruction and get information on what happened.
 				String executeError = interTrace.ExecuteAnInstruction();
 				String instName = Interpreter.instruction;
 
 				// Display the instruction being executed
-				MachineMain.machineView.outputText("\nInstruction: "
+				MachineMain.machineView.outputText("\n\nInstruction: "
 						+ instName + '\n');
 				
 				// Check if the loader returned an error finding the file.
@@ -873,9 +871,7 @@ public class Controller {
 			if (!errorExists) {
 				int number = Integer.parseInt(text);
 				// Convert to 2's complement
-				if (number < 0) {
-					number = number + 65536;
-				} 
+				number = Utility.convertToTwosComplement(number);
 				MachineMain.machineModel.registerMap.put(0, Utility.DecimalValueToHex(number));
 				// Register 0 was altered, so record that in the interpreter.
 				Integer counter = 0;
