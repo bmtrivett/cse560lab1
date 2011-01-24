@@ -547,17 +547,18 @@ public class instructionCases {
 		String intermediate = registerMap.get(Integer.parseInt(BaseR, 2));
 		
 		int numresult = Integer.parseInt(intermediate, 16);
-		numresult += Integer.parseInt(binaryRep.substring(6), 2);
-		
+		numresult = Utility.convertFromTwosComplement(numresult);
+		numresult += Utility.convertFromTwosComplement(Integer.parseInt(binaryRep.substring(6), 2));
+		numresult = Utility.convertToTwosComplement(numresult);
 		String result = Integer.toBinaryString(numresult);
 		
 		// Modify CCRs (if result is negative, set N, etc)
-		if (result.charAt(0) < '1') {
+		if (result.charAt(0) == '1') {
 			conditionCodeRegisters.put('N', true);
 			conditionCodeRegisters.put('Z', false);
 			conditionCodeRegisters.put('P', false);
 		}
-		else if ((Integer.parseInt(result.toString(), 2)) != 0) {
+		else if ((Integer.parseInt(result, 2)) != 0) {
 			conditionCodeRegisters.put('N', false);
 			conditionCodeRegisters.put('Z', false);
 			conditionCodeRegisters.put('P', true);
@@ -569,7 +570,7 @@ public class instructionCases {
 		// Put hex string value of result in DR, put DR
 		// value in registerChanges and return a blank string.
 		registerMap.put((Integer.parseInt(DR, 2)), 
-				Utility.BinaryToHex(result.toString()));
+				Utility.BinaryToHex(result));
 		registerChanges[0] = Integer.parseInt(DR, 2);
 		return null;
 	}
@@ -803,7 +804,6 @@ public class instructionCases {
 			result = Utility.HexToBinary(programCounter).substring(0, 7);
 			result = result + binaryRep.substring(3);
 			result = Utility.BinaryToHex(result).toUpperCase();
-			MachineMain.machineView.outputText(result);
 		}
 		return result;
 	}
@@ -920,6 +920,6 @@ public class instructionCases {
 	public static String TRAP(
 			String binaryRep
 	) {
-		return "TRAP" + Utility.BinaryToHex(binaryRep.substring(4));
+		return "TRAP" + Utility.BinaryToHex(binaryRep.substring(4)).substring(2);
 	}
 }
