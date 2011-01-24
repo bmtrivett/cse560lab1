@@ -69,7 +69,8 @@ public class instructionCases {
 			String imm5 = binaryRep.substring(7);
 			temp2 = interpreterUtility.signExtendBinaryString(imm5);
 		}
-		
+		SR1Contents = Utility.convertFromTwosComplement(SR1Contents);
+		temp2 = Utility.convertFromTwosComplement(temp2);
 		int result = SR1Contents+temp2;
 		
 		// Modify CCRs (if result is negative, set N, etc) 
@@ -89,9 +90,10 @@ public class instructionCases {
 		
 		// Put hex string value of result in DR, put DR
 		// value in registerChanges and return a blank string.
-		registerMap.put(Integer.parseInt(DR, 2), Integer.toHexString(result));
+		result = Utility.convertToTwosComplement(result);
+		registerMap.put(Integer.parseInt(DR, 2), Utility.DecimalValueToHex(result));
 		registerChanges[0] = Integer.parseInt(DR, 2);
-		return "";
+		return null;
 	}
 	
 	/**
@@ -170,10 +172,10 @@ public class instructionCases {
 		// length and decrementing by 1.
 		int counter = temp2.length();
 		while (counter > 0) {
-			// If both the characters at the pos[counter] are
+			// If both the characters at the end position are
 			// 1, then insert '1' in the first position of result.
-			if (SR1Contents.charAt(counter) == '1' && 
-					temp2.charAt(counter) == '1') {
+			if (SR1Contents.charAt(counter-1) == '1' && 
+					temp2.charAt(counter-1) == '1') {
 				result.insert(0, '1');
 			}
 			// Otherwise, insert '0' in the first position of result.
@@ -325,9 +327,7 @@ public class instructionCases {
 		// in string result. Then concatenate result and last 9 digits
 		// of binary rep into result.
 		String result = Utility.HexToBinary(programCounter).substring(0, 7);
-		MachineMain.machineView.outputText('\n'+result +'\n');
 		result = result + binaryRep.substring(3);
-		MachineMain.machineView.outputText(result);
 		// Modify CCRs (if result is negative, set N, etc)
 		if (result.charAt(0) == '1') {
 			conditionCodeRegisters.put('N', true);
@@ -780,29 +780,30 @@ public class instructionCases {
 		// check if CCR has N bit set. If both are set, then set
 		// jump to true. Repeat for Z and P bits.
 		if (binaryRep.charAt(0) == '1') {
-			if (conditionCodeRegisters.get('N') == true) {
+			if (conditionCodeRegisters.get('N')) {
 				jump = true;
 			}
 		}
 		if (binaryRep.charAt(1) == '1') {
-			if (conditionCodeRegisters.get('Z') == true) {
+			if (conditionCodeRegisters.get('Z')) {
 				jump = true;
 			}
 		}
 		if (binaryRep.charAt(2) == '1') {
-			if (conditionCodeRegisters.get('P') == true) {
+			if (conditionCodeRegisters.get('P')) {
 				jump = true;
 			}
 		}
 		// If boolean jump is true, then return modified programCounter.
 		if (jump) {
 			
-			// Store first 6 digits of binary conversion of programCounter
+			// Store first 7 digits of binary conversion of programCounter
 			// in string result. Then concatenate result and last 9 digits
 			// of binary rep into result.
-			result = Utility.HexToBinary(programCounter).substring(0, 6);
+			result = Utility.HexToBinary(programCounter).substring(0, 7);
 			result = result + binaryRep.substring(3);
 			result = Utility.BinaryToHex(result);
+			MachineMain.machineView.outputText(result);
 		}
 		return result;
 	}

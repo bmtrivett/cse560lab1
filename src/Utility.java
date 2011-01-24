@@ -57,7 +57,11 @@ public class Utility {
 	 * @return A string that represents the decimal value parameter.
 	 */
 	public static String DecimalValueToHex(Integer value) {
-		return Integer.toHexString(value);
+		String hexString = Integer.toHexString(value).toUpperCase();
+		while (hexString.length() < 4) {
+			hexString = "0" + hexString;
+		}
+		return hexString;
 	}
 
 	/**
@@ -91,6 +95,38 @@ public class Utility {
 		} else {
 			return "0";
 		}
+	}
+
+	/**
+	 * Converts a decimal value that was in binary 2s complement to its correct
+	 * decimal value.
+	 * 
+	 * @param value
+	 *            The decimal value that is going to be converted.
+	 * @return The correct decimal value that has been converted from twos
+	 *         complement binary.
+	 */
+	public static Integer convertFromTwosComplement(Integer value) {
+		if (value > 32767) {
+			value = value - 65536;
+		}
+		return value;
+	}
+
+	/**
+	 * Converts a decimal value that will be in binary 2s complement to its
+	 * correct decimal value.
+	 * 
+	 * @param value
+	 *            The decimal value that is going to be converted.
+	 * @return The correct decimal value that will be converted into twos
+	 *         complement binary.
+	 */
+	public static Integer convertToTwosComplement(Integer value) {
+		if (value < 0) {
+			value = value + 65536;
+		}
+		return value;
 	}
 
 }
