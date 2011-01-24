@@ -533,10 +533,12 @@ public class Controller {
 						}
 						
 						// Check for errors or HALT command.
+						if (trapError != null){
 						if (trapError.equals("HALT")){
 							break;
-						} else if (trapError != null){
+						} else {
 							MachineMain.machineView.outputText(trapError + '\n');
+						}
 						}
 					} else if (executeError.substring(0,4).equals("DBUG")) {
 						// Display registers if DBUG instruction occurs.
