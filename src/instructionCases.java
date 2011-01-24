@@ -802,7 +802,7 @@ public class instructionCases {
 			// of binary rep into result.
 			result = Utility.HexToBinary(programCounter).substring(0, 7);
 			result = result + binaryRep.substring(3);
-			result = Utility.BinaryToHex(result);
+			result = Utility.BinaryToHex(result).toUpperCase();
 			MachineMain.machineView.outputText(result);
 		}
 		return result;
@@ -844,7 +844,7 @@ public class instructionCases {
 		}
 		
 		// Return hex value of result.
-		return Utility.BinaryToHex(result);
+		return Utility.BinaryToHex(result).toUpperCase();
 	}
 	
 	/**
@@ -888,7 +888,7 @@ public class instructionCases {
 		}
 		
 		// Return hex value of changed memory location.
-		return Integer.toHexString(numresult);
+		return Integer.toHexString(numresult).toUpperCase();
 	}
 	
 	/**
