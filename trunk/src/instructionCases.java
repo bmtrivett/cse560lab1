@@ -699,7 +699,7 @@ public class instructionCases {
 		
 		// Put memory location that is changed into memoryChanges and 
 		// return a blank string.
-		memoryChanges[0] = Utility.BinaryToHex(result);
+		memoryChanges[0] = result;
 		return null;
 	}
 	
