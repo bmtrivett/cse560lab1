@@ -255,7 +255,7 @@ public class instructionCases {
 		while (counter > 0) {
 			// If the character at pos[counter] is 0, then insert
 			// a '1' in the first position of result.
-			if (SRContents.charAt(counter) == '0') {
+			if (SRContents.charAt(counter-1) == '0') {
 				result.insert(0, '1');
 			}
 			// Otherwise, insert a '0' in the first position of result.
