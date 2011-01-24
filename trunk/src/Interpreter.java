@@ -1,7 +1,10 @@
 
 /**
- * This class interprets the instructions and executes them.
- * Will only stop execution if HALT instruction is encountered.
+ * This class interprets the given instruction and executes it. It
+ * contains three fields, parserOfInstructions, memoryChanges and
+ * registerChanges. parserOfInstructions will be of type 
+ * instructionParser, memoryChanges will be of type string array,
+ * and registerChanges will be of type integer array.
  * @author GerardLouis
  *
  */

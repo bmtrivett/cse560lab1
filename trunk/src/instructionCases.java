@@ -391,7 +391,7 @@ public class instructionCases {
 		// Store first 6 digits of binary conversion of programCounter
 		// in string result. Then concatenate result and last 9 digits
 		// of binary rep into result.
-		String result = Utility.HexToBinary(programCounter).substring(0, 6);
+		String result = Utility.HexToBinary(programCounter).substring(0, 7);
 		result = result + binaryRep.substring(3);
 		
 		programCounter = interpreterUtility.DecrementHexValue(programCounter);
@@ -468,7 +468,7 @@ public class instructionCases {
 		// Store first 6 digits of binary conversion of programCounter
 		// in string result. Then concatenate result and last 9 digits
 		// of binary rep into result.
-		String result = Utility.HexToBinary(programCounter).substring(0, 6);
+		String result = Utility.HexToBinary(programCounter).substring(0, 7);
 		result = result + binaryRep.substring(3);
 		
 		// Check if initial operand is on same page as instruction.
@@ -539,7 +539,7 @@ public class instructionCases {
 		if (!interpreterUtility.isRegisterValue(DR)) {
 			return "Destination Register out of range.";
 		}
-		String BaseR = binaryRep.substring(3, 5);
+		String BaseR = binaryRep.substring(3, 6);
 		if (!interpreterUtility.isRegisterValue(BaseR)) {
 			return "Base Register out of range.";
 		}
@@ -614,7 +614,7 @@ public class instructionCases {
 		// Store first 6 digits of binary conversion of programCounter
 		// in string result. Then concatenate result and last 9 digits
 		// of binary rep into result.
-		String result = Utility.HexToBinary(programCounter).substring(0, 6);
+		String result = Utility.HexToBinary(programCounter).substring(0, 7);
 		result = result + binaryRep.substring(3);
 		
 		programCounter = interpreterUtility.DecrementHexValue(programCounter);
@@ -676,7 +676,7 @@ public class instructionCases {
 		// Store first 6 digits of binary conversion of programCounter
 		// in string result. Then concatenate result and last 9 digits
 		// of binary rep into result.
-		String intermediate = Utility.HexToBinary(programCounter).substring(0, 6);
+		String intermediate = Utility.HexToBinary(programCounter).substring(0, 7);
 		intermediate = intermediate + binaryRep.substring(3);
 		
 		// Check if operand is on same page as instruction.

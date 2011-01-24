@@ -1,7 +1,10 @@
 import java.util.Map;
 
 /** 
- * This class will parse through the given Instructions
+ * This class will parse through the given Instructions. It contains one
+ * method that will have the ability to change the general purpose registers,
+ * condition code registers, memory, and the programCounter depending on the 
+ * instruction received. 
  * @author GerardLouis
  *
  */
