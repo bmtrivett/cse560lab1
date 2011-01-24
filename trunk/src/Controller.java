@@ -88,7 +88,7 @@ public class Controller implements ControllerInterface {
 	 * 
 	 * @author Ben Trivett
 	 */
-	private void echoInput() {
+	public void echoInput() {
 		String text = MachineMain.machineView.getInput();
 		MachineMain.machineView.outputText(text + "\n\n");
 		MachineMain.machineView.clearInputField();
@@ -98,7 +98,7 @@ public class Controller implements ControllerInterface {
 	 * Outputs all the memory that has been altered into the text area of the
 	 * View.
 	 */
-	private void displayAllMemory() {
+	public void displayAllMemory() {
 		// Memory header
 		MachineMain.machineView
 				.outputText("\tMemory Address\tMemory Contents\n");
@@ -122,7 +122,7 @@ public class Controller implements ControllerInterface {
 	 * Outputs the contents of the general purpose registers, the program
 	 * counter, and the condition code registers into the text area of the View.
 	 */
-	private void displayAllRegisters() {
+	public void displayAllRegisters() {
 		// General purpose registers header
 		MachineMain.machineView
 				.outputText("\nGeneral Purpose Registers:\tR0  \tR1  \tR2  \tR3  "
@@ -169,7 +169,7 @@ public class Controller implements ControllerInterface {
 	 * @param header
 	 *            If 0, the header will be set to initial; if 1, to final.
 	 */
-	private void displayFull(int header) {
+	public void displayFull(int header) {
 		if (header == 0) {
 			MachineMain.machineView
 					.outputText("=============================="
@@ -282,7 +282,7 @@ public class Controller implements ControllerInterface {
 	/**
 	 * Write the character in R0[2,4] to the console.
 	 */
-	private void trapOut() {
+	public void trapOut() {
 		int decimal = Utility
 				.HexToDecimalValue(MachineMain.machineModel.registerMap.get(0)
 						.substring(2, 4));
@@ -293,7 +293,7 @@ public class Controller implements ControllerInterface {
 	/**
 	 * Write the null-terminated string pointed to by R0 to the console.
 	 */
-	private void trapPuts() {
+	public void trapPuts() {
 		int count = Utility
 				.HexToDecimalValue(MachineMain.machineModel.registerMap.get(0));
 		while (!(MachineMain.machineModel.memoryArray[count] == null)) {
@@ -318,7 +318,7 @@ public class Controller implements ControllerInterface {
 	 * 
 	 * @author Ben Trivett
 	 */
-	private class GetFileLocation implements ActionListener {
+	public class GetFileLocation implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// Take in the input.
 			String text = MachineMain.machineView.getInput();
@@ -354,7 +354,7 @@ public class Controller implements ControllerInterface {
 	 * 
 	 * @author Ben Trivett
 	 */
-	private class RunOrSetOptions implements ActionListener {
+	public class RunOrSetOptions implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// Take in the input.
 			String text = MachineMain.machineView.getInput();
@@ -387,7 +387,7 @@ public class Controller implements ControllerInterface {
 	 * 
 	 * @author Ben Trivett
 	 */
-	private class SetOptions implements ActionListener {
+	public class SetOptions implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// Take in the input.
 			String text = MachineMain.machineView.getInput();
@@ -445,7 +445,7 @@ public class Controller implements ControllerInterface {
 	 * 
 	 * @author Ben Trivett
 	 */
-	private class RunModeSelect implements ActionListener {
+	public class RunModeSelect implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// Take in the input.
 			String text = MachineMain.machineView.getInput();
@@ -483,7 +483,7 @@ public class Controller implements ControllerInterface {
 	 * 
 	 * @author Ben Trivett
 	 */
-	private class QuietMode implements ActionListener {
+	public class QuietMode implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (!isExecuting) {
 				isExecuting = true;
@@ -540,7 +540,7 @@ public class Controller implements ControllerInterface {
 	 * 
 	 * @author Ben Trivett
 	 */
-	private class TraceMode implements ActionListener {
+	public class TraceMode implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (!isExecuting) {
 				isExecuting = true;
@@ -687,7 +687,7 @@ public class Controller implements ControllerInterface {
 	 * 
 	 * @author Ben Trivett
 	 */
-	private class StepMode implements ActionListener {
+	public class StepMode implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (!isExecuting) {
 				isExecuting = true;
@@ -841,7 +841,7 @@ public class Controller implements ControllerInterface {
 	 * 
 	 * @author Ben Trivett
 	 */
-	private class EndOrRestart implements ActionListener {
+	public class EndOrRestart implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// Take in the input.
 			String text = MachineMain.machineView.getInput();
