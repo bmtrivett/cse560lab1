@@ -1,7 +1,5 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.*;
 import java.util.Random;
 
@@ -517,10 +515,6 @@ public class Controller {
 					// Execute an instruction and get information on what
 					// happened.
 					String executeError = interQuiet.ExecuteAnInstruction();
-					String instName = Interpreter.instruction;
-					String[] memAltered = Interpreter.memoryChanges;
-					Integer[] regAltered = Interpreter.registerChanges;
-
 					// Check if the loader returned an error finding the file.
 					if (executeError != null) {
 						// Execute trap or debug instructions if they occurred
