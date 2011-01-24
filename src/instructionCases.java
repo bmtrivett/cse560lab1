@@ -36,11 +36,11 @@ public class instructionCases {
 			Integer[] registerChanges
 	) {
 		// Read in DR and SR1 and check if they are in range.
-		String DR = binaryRep.substring(0, 2);
+		String DR = binaryRep.substring(0, 3);
 		if (!interpreterUtility.isRegisterValue(DR)) {
 			return "Destination Register out of range.";
 		}
-		String SR1 = binaryRep.substring(3, 5);
+		String SR1 = binaryRep.substring(3, 6);
 		if (!interpreterUtility.isRegisterValue(SR1)) {
 			return "Source Register 1 out of range.";
 		}
@@ -123,11 +123,11 @@ public class instructionCases {
 		Integer[] registerChanges
 	) {
 		// Read in DR and SR1 and check if they are in range.
-		String DR = binaryRep.substring(0, 2);
+		String DR = binaryRep.substring(0, 3);
 		if (!interpreterUtility.isRegisterValue(DR)) {
 			return "Destination Register out of range.";
 		}
-		String SR1 = binaryRep.substring(3, 5);
+		String SR1 = binaryRep.substring(3, 6);
 		if (!interpreterUtility.isRegisterValue(SR1)) {
 			return "Source Register 1 out of range.";
 		}
@@ -235,11 +235,11 @@ public class instructionCases {
 		Integer[] registerChanges
 	) {
 		// Read in DR and SR and check if they are in range.
-		String DR = binaryRep.substring(0, 2);
+		String DR = binaryRep.substring(0, 3);
 		if (!interpreterUtility.isRegisterValue(DR)) {
 			return "Destination Register out of range.";
 		}
-		String SR = binaryRep.substring(3, 5);
+		String SR = binaryRep.substring(3, 6);
 		if (!interpreterUtility.isRegisterValue(SR)) {
 			return "Source Register out of range.";
 		}
@@ -318,7 +318,7 @@ public class instructionCases {
 			Integer[] registerChanges
 	) {
 		// Read in DR and check if it is in range.
-		String DR = binaryRep.substring(0, 2);
+		String DR = binaryRep.substring(0, 3);
 		if (!interpreterUtility.isRegisterValue(DR)) {
 			return "Destination Register out of range.";
 		}
@@ -383,7 +383,7 @@ public class instructionCases {
 			Integer[] registerChanges
 	) {
 		// Read in DR and check if it is in range.
-		String DR = binaryRep.substring(0, 2);
+		String DR = binaryRep.substring(0, 3);
 		if (!interpreterUtility.isRegisterValue(DR)) {
 			return "Destination Register out of range.";
 		}
@@ -460,7 +460,7 @@ public class instructionCases {
 			Integer[] registerChanges
 	) {
 		// Read in DR and check if it is in range.
-		String DR = binaryRep.substring(0, 2);
+		String DR = binaryRep.substring(0, 3);
 		if (!interpreterUtility.isRegisterValue(DR)) {
 			return "Destination Register out of range.";
 		}
@@ -535,7 +535,7 @@ public class instructionCases {
 			Integer[] registerChanges
 	) {
 		// Read in DR and BaseR and check if they are in range.
-		String DR = binaryRep.substring(0, 2);
+		String DR = binaryRep.substring(0, 3);
 		if (!interpreterUtility.isRegisterValue(DR)) {
 			return "Destination Register out of range.";
 		}
@@ -606,7 +606,7 @@ public class instructionCases {
 			String[] memoryChanges
 	) {
 		// Read in SR and check if it is in range.
-		String SR = binaryRep.substring(0, 2);
+		String SR = binaryRep.substring(0, 3);
 		if (!interpreterUtility.isRegisterValue(SR)) {
 			return "Source Register out of range.";
 		}
@@ -668,7 +668,7 @@ public class instructionCases {
 			String[] memoryChanges
 	) {
 		// Read in SR and check if it is in range.
-		String SR = binaryRep.substring(0, 2);
+		String SR = binaryRep.substring(0, 3);
 		if (!interpreterUtility.isRegisterValue(SR)) {
 			return "Source Register out of range.";
 		}
@@ -731,11 +731,11 @@ public class instructionCases {
 			String[] memoryChanges
 	) {
 		// Read in SR and BaseR and check if they are in range.
-		String SR = binaryRep.substring(0, 2);
+		String SR = binaryRep.substring(0, 3);
 		if (!interpreterUtility.isRegisterValue(SR)) {
 			return "Destination Register out of range.";
 		}
-		String BaseR = binaryRep.substring(3, 5);
+		String BaseR = binaryRep.substring(3, 6);
 		if (!interpreterUtility.isRegisterValue(BaseR)) {
 			return "Base Register out of range.";
 		}
@@ -871,7 +871,7 @@ public class instructionCases {
 			Integer[] registerChanges
 	) {
 		// Read in BaseR and check if it is in range.
-		String BaseR = binaryRep.substring(3, 5);
+		String BaseR = binaryRep.substring(3, 6);
 		if (!interpreterUtility.isRegisterValue(BaseR)) {
 			return "Base Register out of range.";
 		}
