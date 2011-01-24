@@ -834,7 +834,7 @@ public class instructionCases {
 		// Store first 6 digits of binary conversion of programCounter
 		// in string result. Then concatenate result and last 9 digits
 		// of binary rep into result.
-		String result = Utility.HexToBinary(programCounter).substring(0, 6);
+		String result = Utility.HexToBinary(programCounter).substring(0, 7);
 		result = result + binaryRep.substring(3);
 		
 		if (binaryRep.charAt(0) == '1') {
