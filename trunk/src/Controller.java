@@ -29,8 +29,6 @@ public class Controller {
 	private TraceMode trace;
 	private StepMode step;
 	private EndOrRestart end;
-	private ReadSingleCharacter readCharacter;
-	private ReadTrapInteger readInteger;
 
 	// Consolidate all instruction text.
 	private String getFileInst = "Enter location of file you wish to load:\n";
@@ -48,10 +46,6 @@ public class Controller {
 	// Step mode requires a field to keep track of the number of instructions
 	// that have already been executed.
 	private Integer stepExecInst;
-
-	// Pause execution of action listener in case the trap instruction needs to
-	// take in an input
-	private Boolean pauseForTrapExecution;
 
 	// Flag that is set to true when an action listener execution mode is
 	// executing
@@ -76,9 +70,7 @@ public class Controller {
 		trace = new TraceMode();
 		step = new StepMode();
 		end = new EndOrRestart();
-		readCharacter = new ReadSingleCharacter();
-		readInteger = new ReadTrapInteger();
-
+		
 		// Reset isExecuting because nothing has executed yet
 		isExecuting = false;
 
@@ -211,7 +203,7 @@ public class Controller {
 	 * 31 = OUTN: Write the value of R0 to the console as a decimal integer. <br />
 	 * 33 = INN: Print a prompt on the screen and read a decimal number from the
 	 * keyboard. The number is echoed to the screen and stored in R0. Must be in
-	 * the range -32767 < x < 32767. <br />
+	 * the range -32768 < x < 32767. <br />
 	 * 43 = RND: Store a random number in R0.
 	 * 
 	 * @param executeError
@@ -226,21 +218,29 @@ public class Controller {
 		if (trapType.equals("21")) {
 			// OUT: Write the character in R0[7:0] to the console.
 			trapOut();
-			pauseForTrapExecution = false;
 		} else if (trapType.equals("22")) {
 			// PUTS: Write the null-terminated string pointed to by R0 to the
 			// console.
 			trapPuts();
-			pauseForTrapExecution = false;
 		} else if (trapType.equals("23")) {
 			// IN: Print a prompt on the screen and read a single character from
 			// the keyboard. The character is copied to the screen and its ASCII
 			// code is copied to R0. The high 8 bits of R0 are cleared.
-			MachineMain.machineView.setKeyListener(null, readCharacter);
+			Boolean containsError = true;
+			while (containsError) {
+				String input = MachineMain.machineView
+						.showInputDialog("Enter a character: ");
+				if (input.length() > 1) {
+					MachineMain.machineView.showError("Input too long.");
+					containsError = true;
+				} else {
+					char ch = input.charAt(0);
+					containsError = keyTyped(ch);
+				}
+			}
 		} else if (trapType.equals("25")) {
 			// HALT: Halt execution and print a message to the console.
 			error = "HALT";
-			pauseForTrapExecution = false;
 		} else if (trapType.equals("31")) {
 			// OUTN: Write the value of R0 to the console as a decimal integer.
 			Integer decimal = Utility
@@ -249,20 +249,23 @@ public class Controller {
 			// Convert from 2's complement
 			decimal = Utility.convertFromTwosComplement(decimal);
 			MachineMain.machineView.outputText(decimal.toString());
-			pauseForTrapExecution = false;
 		} else if (trapType.equals("33")) {
 			// INN: Print a prompt on the screen and read a decimal number from
 			// the keyboard. The number is echoed to the screen and stored in
-			// R0. Must be in the range -32767 < x < 32767.
-			MachineMain.machineView.outputText("Enter an integer: ");
-			MachineMain.machineView.setListener(null, readInteger);
+			// R0. Must be in the range -32768 < x < 32767.
+			Boolean containsError = true;
+			while (containsError) {
+				String input = MachineMain.machineView
+						.showInputDialog("Enter an integer: ");
+				containsError = readTrapInteger(input);
+			}
 		} else if (trapType.equals("43")) {
 			// RND: Store a random number in R0.
 			Random generator = new Random();
 			Integer randomInteger = generator.nextInt(65536);
 			int number = Utility.convertFromTwosComplement(randomInteger);
 			MachineMain.machineModel.registerMap.put(0,
-					randomInteger.toString());
+					Utility.DecimalValueToHex(randomInteger));
 			// Update CCRs
 			if (number > 0) {
 				MachineMain.machineModel.conditionCodeRegisters.put('N', true);
@@ -281,14 +284,18 @@ public class Controller {
 				counter++;
 			}
 			Interpreter.registerChanges[counter] = 0;
-			pauseForTrapExecution = false;
 		} else {
 			error = "Trap type invalid.";
-			pauseForTrapExecution = false;
 		}
 		// Set register 7 to the program counter per specifications.
 		MachineMain.machineModel.registerMap.put(7,
 				MachineMain.machineModel.programCounter);
+		// Register 7 was altered, so record that in the interpreter.
+		Integer counter = 0;
+		while (Interpreter.registerChanges[counter] != null) {
+			counter++;
+		}
+		Interpreter.registerChanges[counter] = 7;
 		return error;
 	}
 
@@ -309,7 +316,7 @@ public class Controller {
 	private void trapPuts() {
 		int count = Utility
 				.HexToDecimalValue(MachineMain.machineModel.registerMap.get(0));
-		while (!(MachineMain.machineModel.memoryArray[count].equals(null))) {
+		while (!(MachineMain.machineModel.memoryArray[count] == null)) {
 			if (MachineMain.machineModel.memoryArray[count].substring(2, 4)
 					.equals("00")) {
 				break;
@@ -517,15 +524,9 @@ public class Controller {
 					// Check if the loader returned an error finding the file.
 					if (executeError != null) {
 						// Execute trap or debug instructions if they occurred
-						pauseForTrapExecution = true;
 						if (executeError.substring(0, 4).equals("TRAP")) {
 							// Execute the trap
 							String trapError = executeTrap(executeError);
-
-							// Wait in case the user needs to input something.
-							while (pauseForTrapExecution) {
-							}
-
 							// Check for errors or HALT command.
 							if (trapError != null) {
 								if (trapError.equals("HALT")) {
@@ -593,14 +594,9 @@ public class Controller {
 					// Check if the loader returned an error finding the file.
 					if (executeError != null) {
 						// Execute trap or debug instructions if they occurred
-						pauseForTrapExecution = true;
 						if (executeError.substring(0, 4).equals("TRAP")) {
 							// Execute the trap
 							String trapError = executeTrap(executeError);
-
-							// Wait in case the user needs to input something.
-							while (pauseForTrapExecution) {
-							}
 
 							// Check for errors or HALT command.
 							if (trapError != null) {
@@ -747,14 +743,9 @@ public class Controller {
 					// Check if the loader returned an error finding the file.
 					if (executeError != null) {
 						// Execute trap or debug instructions if they occurred
-						pauseForTrapExecution = true;
 						if (executeError.substring(0, 4).equals("TRAP")) {
 							// Execute the trap
 							String trapError = executeTrap(executeError);
-
-							// Wait in case the user needs to input something.
-							while (pauseForTrapExecution) {
-							}
 
 							// Check for errors or HALT command.
 							if (trapError != null) {
@@ -901,129 +892,96 @@ public class Controller {
 	}
 
 	/**
-	 * An action listener that takes the user input of one character in the text
-	 * field of the View, displays it in the text area of the View, and stores
-	 * it in register 0.
+	 * Stores the character parameter in register 0. Must be in ascii table.
 	 * 
-	 * @author Ben Trivett
+	 * @param ch
+	 *            The character to be stored.
+	 * @return True if there was an error, false otherwise.
 	 */
-	private class ReadSingleCharacter implements KeyListener {
-		@Override
-		public void keyTyped(KeyEvent e) {
-			// Take in the input.
-			char ch = e.getKeyChar();
-			if (ch != KeyEvent.CHAR_UNDEFINED && (int) ch >= 0
-					&& (int) ch <= 127) {
-				Character output = ch;
-				int number = ch;
-				MachineMain.machineView.outputText(output.toString());
-				MachineMain.machineModel.registerMap.put(0,
-						Utility.DecimalValueToHex((int) ch));
-				// Update CCRs
-				if (number > 0) {
-					MachineMain.machineModel.conditionCodeRegisters.put('N',
-							true);
-					MachineMain.machineModel.conditionCodeRegisters.put('Z',
-							false);
-					MachineMain.machineModel.conditionCodeRegisters.put('P',
-							false);
-				} else if (number < 0) {
-					MachineMain.machineModel.conditionCodeRegisters.put('N',
-							false);
-					MachineMain.machineModel.conditionCodeRegisters.put('Z',
-							false);
-					MachineMain.machineModel.conditionCodeRegisters.put('P',
-							true);
-				} else {
-					MachineMain.machineModel.conditionCodeRegisters.put('Z',
-							true);
-				}
-				// Register 0 was altered, so record that in the interpreter.
-				Integer counter = 0;
-				while (Interpreter.registerChanges[counter] != null) {
-					counter++;
-				}
-				Interpreter.registerChanges[counter] = 0;
-				pauseForTrapExecution = false;
-				MachineMain.machineView.setKeyListener(readCharacter, null);
+	public Boolean keyTyped(char ch) {
+		if ((int) ch >= 0 && (int) ch <= 255) {
+			Character output = ch;
+			int number = ch;
+			MachineMain.machineView.outputText(output.toString());
+			MachineMain.machineModel.registerMap.put(0,
+					Utility.DecimalValueToHex((int) ch));
+			// Update CCRs
+			if (number > 0) {
+				MachineMain.machineModel.conditionCodeRegisters.put('N', true);
+				MachineMain.machineModel.conditionCodeRegisters.put('Z', false);
+				MachineMain.machineModel.conditionCodeRegisters.put('P', false);
+			} else if (number < 0) {
+				MachineMain.machineModel.conditionCodeRegisters.put('N', false);
+				MachineMain.machineModel.conditionCodeRegisters.put('Z', false);
+				MachineMain.machineModel.conditionCodeRegisters.put('P', true);
+			} else {
+				MachineMain.machineModel.conditionCodeRegisters.put('Z', true);
 			}
+			// Register 0 was altered, so record that in the interpreter.
+			Integer counter = 0;
+			while (Interpreter.registerChanges[counter] != null) {
+				counter++;
+			}
+			Interpreter.registerChanges[counter] = 0;
+			return false;
+		} else {
+			return true;
 		}
 
-		@Override
-		public void keyReleased(KeyEvent arg0) {
-			// Necessary method for key listener
-		}
-
-		@Override
-		public void keyPressed(KeyEvent arg0) {
-			// Necessary method for key listener
-		}
 	}
 
 	/**
-	 * An action listener that takes the user input of an integer in the text
-	 * field of the View and stores it in register 0.
+	 * Converts the string parameter to a number and stores it in register 0.
 	 * 
-	 * @author Ben Trivett
+	 * @param text
+	 *            The String to be converted.
+	 * @return True if there was an error, false otherwise.
 	 */
-	private class ReadTrapInteger implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			// Take in the input.
-			String text = MachineMain.machineView.getInput();
-			echoInput();
-
-			// Check for possible exception
-			Boolean errorExists = false;
-			try {
-				Integer.parseInt(text);
-			} catch (NumberFormatException err) {
+	public Boolean readTrapInteger(String text) {
+		// Check for possible exception
+		Boolean errorExists = false;
+		try {
+			Integer.parseInt(text);
+		} catch (NumberFormatException err) {
+			errorExists = true;
+		}
+		if (!errorExists) {
+			if (Integer.parseInt(text) < -32768
+					|| Integer.parseInt(text) > 32767) {
 				errorExists = true;
 			}
-			if (!errorExists) {
-				if (!(Integer.parseInt(text) < -32767)
-						|| !(Integer.parseInt(text) > 32767)) {
-					errorExists = true;
-				}
-			}
-			// If there was no exception, convert text to integer
-			if (!errorExists) {
-				int number = Integer.parseInt(text);
-				// Update CCRs
-				if (number > 0) {
-					MachineMain.machineModel.conditionCodeRegisters.put('N',
-							true);
-					MachineMain.machineModel.conditionCodeRegisters.put('Z',
-							false);
-					MachineMain.machineModel.conditionCodeRegisters.put('P',
-							false);
-				} else if (number < 0) {
-					MachineMain.machineModel.conditionCodeRegisters.put('N',
-							false);
-					MachineMain.machineModel.conditionCodeRegisters.put('Z',
-							false);
-					MachineMain.machineModel.conditionCodeRegisters.put('P',
-							true);
-				} else {
-					MachineMain.machineModel.conditionCodeRegisters.put('Z',
-							true);
-				}
-				// Convert to 2's complement and store in R0
-				number = Utility.convertToTwosComplement(number);
-				MachineMain.machineModel.registerMap.put(0,
-						Utility.DecimalValueToHex(number));
-				// Register 0 was altered, so record that in the interpreter.
-				Integer counter = 0;
-				while (Interpreter.registerChanges[counter] != null) {
-					counter++;
-				}
-				Interpreter.registerChanges[counter] = 0;
-				pauseForTrapExecution = false;
-				MachineMain.machineView.setListener(readInteger, null);
-			} else {
-				// Display error and instructions again.
-				MachineMain.machineView
-						.showError("Invalid response. Valid responses: -32,767 to 32767");
-			}
 		}
+		// If there was no exception, convert text to integer
+		if (!errorExists) {
+			int number = Integer.parseInt(text);
+			// Update CCRs
+			if (number > 0) {
+				MachineMain.machineModel.conditionCodeRegisters.put('N', true);
+				MachineMain.machineModel.conditionCodeRegisters.put('Z', false);
+				MachineMain.machineModel.conditionCodeRegisters.put('P', false);
+			} else if (number < 0) {
+				MachineMain.machineModel.conditionCodeRegisters.put('N', false);
+				MachineMain.machineModel.conditionCodeRegisters.put('Z', false);
+				MachineMain.machineModel.conditionCodeRegisters.put('P', true);
+			} else {
+				MachineMain.machineModel.conditionCodeRegisters.put('Z', true);
+			}
+			// Convert to 2's complement and store in R0
+			number = Utility.convertToTwosComplement(number);
+			MachineMain.machineModel.registerMap.put(0,
+					Utility.DecimalValueToHex(number));
+			// Register 0 was altered, so record that in the interpreter.
+			Integer counter = 0;
+			while (Interpreter.registerChanges[counter] != null) {
+				counter++;
+			}
+			Interpreter.registerChanges[counter] = 0;
+		} else {
+			// Display error and instructions again.
+			MachineMain.machineView
+					.showError("Invalid response. Valid responses: -32,768 to 32767");
+		}
+		return errorExists;
 	}
+
 }

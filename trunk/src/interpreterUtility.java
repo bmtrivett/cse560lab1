@@ -77,9 +77,13 @@ public class interpreterUtility {
 	 *         incremented by 1.
 	 */
 	public static String IncrementHexValue(String hex) {
-		Integer result = Utility.HexToDecimalValue(hex);
-		result++;
-		return Integer.toHexString(result).toUpperCase();
+		if (hex.equals("FFFF")) {
+			return "0000";
+		} else {
+			Integer result = Utility.HexToDecimalValue(hex);
+			result++;
+			return Utility.DecimalValueToHex(result);
+		}
 	}
 
 	/**
@@ -92,9 +96,12 @@ public class interpreterUtility {
 	 *         decremented by 1.
 	 */
 	public static String DecrementHexValue(String hex) {
+		if (hex.equals("0000")){
+			return "FFFF";
+		}
 		Integer result = Utility.HexToDecimalValue(hex);
 		result--;
-		return Integer.toHexString(result).toUpperCase();
+		return Utility.DecimalValueToHex(result);
 	}
 
 	/**
