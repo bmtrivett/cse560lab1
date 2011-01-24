@@ -57,6 +57,9 @@ public class Interpreter {
 		// String instruction set to hex value at programCounter position
 		// in memoryArray.
 		instruction = MachineMain.machineModel.memoryArray[programCounterDecimal];
+		if (instruction == null){
+			instruction = "0000";
+		}
 		
 		// Then programCounter is incremented and decimal value is updated.
 		MachineMain.machineModel.programCounter = interpreterUtility.IncrementHexValue(MachineMain.machineModel.programCounter); 

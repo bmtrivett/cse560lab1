@@ -186,7 +186,7 @@ public class instructionCases {
 		}
 		
 		// Modify CCRs (if result is negative, set N, etc)
-		if (result.charAt(0) < '1') {
+		if (result.charAt(0) == '1') {
 			conditionCodeRegisters.put('N', true);
 			conditionCodeRegisters.put('Z', false);
 			conditionCodeRegisters.put('P', false);
@@ -750,7 +750,7 @@ public class instructionCases {
 		
 		// Put memory location that is changed into memoryChanges and 
 		// return a blank string.
-		memoryChanges[0] = Integer.toHexString(numresult);
+		memoryChanges[0] = Utility.DecimalValueToHex(numresult);
 		return null;
 	}
 	
@@ -881,13 +881,13 @@ public class instructionCases {
 		numresult += Integer.parseInt(binaryRep.substring(6), 2);
 		
 		if (binaryRep.charAt(0) == '1') {
-			registerMap.put(7, Integer.toHexString(numresult));
+			registerMap.put(7, Utility.DecimalValueToHex(numresult));
 			// Put register location that is changed into registerChanges
 			registerChanges[0] = 7;
 		}
 		
 		// Return hex value of changed memory location.
-		return Integer.toHexString(numresult).toUpperCase();
+		return Utility.DecimalValueToHex(numresult);
 	}
 	
 	/**

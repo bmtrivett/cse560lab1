@@ -1,12 +1,9 @@
 
-
 import java.io.*;
 
 /**
  * To put the input information into the data structures that represent the
- * memory and registers of the machine. It will read in a .txt file and check it
- * for the correct format according to the User Guide. If there is a problem
- * with the input file an error will be output onto the screen. 
+ * memory and registers of the machine.
  * 
  * @author BSchuck
  * 
@@ -22,7 +19,7 @@ public class InputInstructions {
 	 * 
 	 * @param args
 	 * @throws IOException
-	 *  Takes in the Input file and makes an array of all the memory.
+	 *             Takes in the Input file and makes an array of all the memory.
 	 */
 	public static String FindFile(String input) throws IOException {
 
@@ -42,12 +39,11 @@ public class InputInstructions {
 		if (read.charAt(0) != 'H') {
 			return "The header record is incorrect in the file please try a new file.";
 		}
-		
+
 		count = 0;
 		while (count < 15) {
 			char ch = read.charAt(count);
-			if (Character.isLowerCase(ch) || ch == ' ')
-			{
+			if (Character.isLowerCase(ch) || ch == ' ') {
 				return "The header record is incorrect in the file please try a new file.";
 			}
 			count++;
@@ -64,7 +60,6 @@ public class InputInstructions {
 		String startValue = firstLine.substring(7, 11);
 		String memorySize = firstLine.substring(POS_OF_INT, 15);
 
-
 		// converts the hex to figure out how many memory spaces there are.
 		int decValueMem = Integer.parseInt(memorySize, 16);
 		int decValueStart = Integer.parseInt(startValue, 16);
@@ -74,13 +69,13 @@ public class InputInstructions {
 		// array
 		while (read != null) {
 			int counter = 2;
-			
+
 			read = file.readLine();
-			
+
 			if (read.charAt(0) == '\n') {
 				return "The text record is incorrect in the file please try a new file.";
 			}
-		
+
 			if (read.substring(0, 1).equals("E")) {
 				break;
 			}

@@ -77,6 +77,13 @@ public class View extends JFrame {
 	}
 
 	/**
+	 * Displays an input dialog that returns the input as a string.
+	 */
+	public String showInputDialog(String message){
+		return JOptionPane.showInputDialog(message);
+	}
+	
+	/**
 	 * Adds the text from the parameter to the end of the text area.
 	 * 
 	 * @param out
