@@ -1,5 +1,3 @@
-import java.util.Map;
-
 /** 
  * This class will parse through the given Instructions. It contains one
  * method that will have the ability to change the general purpose registers,
@@ -57,7 +55,7 @@ public class instructionParser {
 		switch (instruction.charAt(0)) {
 			case '0':
 			{
-				Interpreter.instruction = "BRx";
+				Interpreter.instruction = "BRx " + binaryRep;
 				error = instructionCases.BRx(
 						MachineMain.machineModel.conditionCodeRegisters, 
 						MachineMain.machineModel.programCounter, binaryRep);
@@ -68,7 +66,7 @@ public class instructionParser {
 			}	
 			case '1':
 			{
-				Interpreter.instruction = "ADD";
+				Interpreter.instruction = "ADD " + binaryRep;
 				error = instructionCases.ADD(
 						MachineMain.machineModel.registerMap, 
 						MachineMain.machineModel.conditionCodeRegisters, binaryRep,
@@ -77,7 +75,7 @@ public class instructionParser {
 			}
 			case '2':
 			{
-				Interpreter.instruction = "LD";
+				Interpreter.instruction = "LD " + binaryRep;
 				error = instructionCases.LD(
 						MachineMain.machineModel.registerMap, 
 						MachineMain.machineModel.memoryArray, 
@@ -88,7 +86,7 @@ public class instructionParser {
 			}
 			case '3':
 			{
-				Interpreter.instruction = "ST";
+				Interpreter.instruction = "ST " + binaryRep;
 				error = instructionCases.ST(
 						MachineMain.machineModel.registerMap, 
 						MachineMain.machineModel.memoryArray, 
@@ -99,7 +97,7 @@ public class instructionParser {
 			}
 			case '4':
 			{
-				Interpreter.instruction = "JSR";
+				Interpreter.instruction = "JSR " + binaryRep;
 				error = instructionCases.JSR(
 						MachineMain.machineModel.registerMap, 
 						MachineMain.machineModel.programCounter, binaryRep,
@@ -111,7 +109,7 @@ public class instructionParser {
 			}
 			case '5':
 			{
-				Interpreter.instruction = "AND";
+				Interpreter.instruction = "AND " + binaryRep;
 				error = instructionCases.AND(
 						MachineMain.machineModel.registerMap, 
 						MachineMain.machineModel.conditionCodeRegisters, binaryRep,
@@ -120,7 +118,7 @@ public class instructionParser {
 			}
 			case '6':
 			{
-				Interpreter.instruction = "LDR";
+				Interpreter.instruction = "LDR " + binaryRep;
 				error = instructionCases.LDR(
 						MachineMain.machineModel.registerMap, 
 						MachineMain.machineModel.conditionCodeRegisters, binaryRep,
@@ -129,7 +127,7 @@ public class instructionParser {
 			}
 			case '7':
 			{
-				Interpreter.instruction = "STR";
+				Interpreter.instruction = "STR " + binaryRep;
 				error = instructionCases.STR(
 						MachineMain.machineModel.registerMap, 
 						MachineMain.machineModel.memoryArray, 
@@ -139,13 +137,13 @@ public class instructionParser {
 			}
 			case '8':
 			{
-				Interpreter.instruction = "DBUG";
+				Interpreter.instruction = "DBUG " + binaryRep;
 				error = "DBUG";
 				break;
 			}
 			case '9':
 			{
-				Interpreter.instruction = "NOT";
+				Interpreter.instruction = "NOT " + binaryRep;
 				error = instructionCases.NOT(
 						MachineMain.machineModel.registerMap, 
 						MachineMain.machineModel.conditionCodeRegisters, binaryRep,
@@ -154,7 +152,7 @@ public class instructionParser {
 			}
 			case 'A':
 			{
-				Interpreter.instruction = "LDI";
+				Interpreter.instruction = "LDI " + binaryRep;
 				error = instructionCases.LDI(
 						MachineMain.machineModel.registerMap, 
 						MachineMain.machineModel.memoryArray, 
@@ -165,7 +163,7 @@ public class instructionParser {
 			}
 			case 'B':
 			{
-				Interpreter.instruction = "STI";
+				Interpreter.instruction = "STI " + binaryRep;
 				error = instructionCases.STI(
 						MachineMain.machineModel.registerMap, 
 						MachineMain.machineModel.memoryArray, 
@@ -176,7 +174,7 @@ public class instructionParser {
 			}
 			case 'C':
 			{
-				Interpreter.instruction = "JSRR";
+				Interpreter.instruction = "JSRR " + binaryRep;
 				error = instructionCases.JSRR(
 						MachineMain.machineModel.registerMap, 
 						MachineMain.machineModel.programCounter, binaryRep,
@@ -188,7 +186,7 @@ public class instructionParser {
 			}
 			case 'D':
 			{
-				Interpreter.instruction = "RET";
+				Interpreter.instruction = "RET " + binaryRep;
 				error = instructionCases.RET(
 						MachineMain.machineModel.registerMap);
 				if (error.length() <= 4) {
@@ -198,7 +196,7 @@ public class instructionParser {
 			}
 			case 'E':
 			{
-				Interpreter.instruction = "LEA";
+				Interpreter.instruction = "LEA " + binaryRep;
 				error = instructionCases.LEA(
 						MachineMain.machineModel.registerMap, 
 						MachineMain.machineModel.conditionCodeRegisters, 
@@ -208,7 +206,7 @@ public class instructionParser {
 			}
 			case 'F':
 			{
-				Interpreter.instruction = "TRAP";
+				Interpreter.instruction = "TRAP " + binaryRep;
 				error = instructionCases.TRAP(binaryRep);
 				break;
 			}
