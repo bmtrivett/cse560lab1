@@ -14,7 +14,7 @@ import java.util.Random;
  * 
  * @author Ben Trivett
  */
-public class Controller {
+public class Controller implements ControllerInterface {
 	// Contains event listeners for view GUI and the methods that control
 	// sending/receiving info from view to/from interpreter/loader.
 
@@ -188,28 +188,10 @@ public class Controller {
 				+ "====================================\n");
 	}
 
-	/**
-	 * Executes the TRAP instruction. One of 7 different sub-instructions occurs
-	 * depending on the 2 hex digits: <br />
-	 * 21 = OUT: Write the character in R0[7:0] to the console. <br />
-	 * 22 = PUTS: Write the null-terminated string pointed to by R0 to the
-	 * console. <br />
-	 * 23 = IN: Print a prompt on the screen and read a single character from
-	 * the keyboard. The character is copied to the screen and its ASCII code is
-	 * copied to R0. The high 8 bits of R0 are cleared. <br />
-	 * 25 = HALT: Halt execution and print a message to the console. <br />
-	 * 31 = OUTN: Write the value of R0 to the console as a decimal integer. <br />
-	 * 33 = INN: Print a prompt on the screen and read a decimal number from the
-	 * keyboard. The number is echoed to the screen and stored in R0. Must be in
-	 * the range -32768 < x < 32767. <br />
-	 * 43 = RND: Store a random number in R0.
-	 * 
-	 * @param executeError
-	 *            A string with the first 4 characters being TRAP and the next 2
-	 *            being hex.
-	 * @return A string designating any errors that occurred or HALT if the halt
-	 *         instruction was read.
+	/* (non-Javadoc)
+	 * @see ControllerInterface#executeTrap(java.lang.String)
 	 */
+	@Override
 	public String executeTrap(String executeError) {
 		String error = null;
 		String trapType = executeError.substring(4, 6);
@@ -414,7 +396,7 @@ public class Controller {
 			// Check if input was -1, if so set instruction limit to default
 			// and return to previous action listener.
 			if (text.equals("-1")) {
-				MachineMain.machineModel.instructionLimit = Model.DEFAULT_INSTRUCTION_LIMIT;
+				MachineMain.machineModel.instructionLimit = ModelInterface.DEFAULT_INSTRUCTION_LIMIT;
 				MachineMain.machineView.outputText(runOrOptionsInst);
 				MachineMain.machineView.setListener(options, runOrOptions);
 			} else {
@@ -507,7 +489,7 @@ public class Controller {
 				isExecuting = true;
 				MachineMain.machineView.outputText("Executing...\n");
 				// Create an instance of the interpreter
-				Interpreter interQuiet = new Interpreter();
+				InterpreterInterface interQuiet = new Interpreter();
 
 				// Run the interpreter until the instruction limit is reached.
 				int instructionCount = 0;
@@ -574,7 +556,7 @@ public class Controller {
 							+ MachineMain.machineModel.programCounter);
 
 					// Create an instance of the interpreter
-					Interpreter interTrace = new Interpreter();
+					InterpreterInterface interTrace = new Interpreter();
 
 					// Execute an instruction and get information on what
 					// happened.
@@ -723,7 +705,7 @@ public class Controller {
 							+ MachineMain.machineModel.programCounter);
 
 					// Create an instance of the interpreter
-					Interpreter interStep = new Interpreter();
+					InterpreterInterface interStep = new Interpreter();
 
 					// Execute an instruction and get information on what
 					// happened.
@@ -885,13 +867,10 @@ public class Controller {
 		}
 	}
 
-	/**
-	 * Stores the character parameter in register 0. Must be in ascii table.
-	 * 
-	 * @param ch
-	 *            The character to be stored.
-	 * @return True if there was an error, false otherwise.
+	/* (non-Javadoc)
+	 * @see ControllerInterface#keyTyped(char)
 	 */
+	@Override
 	public Boolean keyTyped(char ch) {
 		if ((int) ch >= 0 && (int) ch <= 255) {
 			Character output = ch;
@@ -924,13 +903,10 @@ public class Controller {
 
 	}
 
-	/**
-	 * Converts the string parameter to a number and stores it in register 0.
-	 * 
-	 * @param text
-	 *            The String to be converted.
-	 * @return True if there was an error, false otherwise.
+	/* (non-Javadoc)
+	 * @see ControllerInterface#readTrapInteger(java.lang.String)
 	 */
+	@Override
 	public Boolean readTrapInteger(String text) {
 		// Check for possible exception
 		Boolean errorExists = false;

@@ -8,7 +8,7 @@
 public class MachineMain {
 
 	public static View machineView;
-	public static Controller machineController;
+	public static ControllerInterface machineController;
 	public static Model machineModel;
 
 	public static void main(String[] args) {

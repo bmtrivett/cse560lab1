@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
  * 
  * @author Ben Trivett
  */
-public class View extends JFrame {
+public class View extends JFrame implements ViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	private static final Integer DEFAULT_CONSOLE_WIDTH = 80;
@@ -30,9 +30,10 @@ public class View extends JFrame {
 		this.resetView();
 	}
 
-	/**
-	 * Creates a new GUI with an empty text field and text area.
+	/* (non-Javadoc)
+	 * @see ViewInterface#resetView()
 	 */
+	@Override
 	public void resetView() {
 		// Set up display objects.
 		inputField = new JTextField(DEFAULT_CONSOLE_WIDTH);
@@ -57,72 +58,61 @@ public class View extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	/**
-	 * Retrieves the input inside the text field and returns it as a string.
-	 * 
-	 * @return The user inputed text as a String.
+	/* (non-Javadoc)
+	 * @see ViewInterface#getInput()
 	 */
+	@Override
 	public String getInput() {
 		return new String(inputField.getText());
 	}
 
-	/**
-	 * Pops up a message dialog that displays the text from the parameter.
-	 * 
-	 * @param errMessage
-	 *            The text to be displayed.
+	/* (non-Javadoc)
+	 * @see ViewInterface#showError(java.lang.String)
 	 */
+	@Override
 	public void showError(String errMessage) {
 		JOptionPane.showMessageDialog(this, errMessage);
 	}
 
-	/**
-	 * Displays an input dialog that returns the input as a string.
+	/* (non-Javadoc)
+	 * @see ViewInterface#showInputDialog(java.lang.String)
 	 */
+	@Override
 	public String showInputDialog(String message){
 		return JOptionPane.showInputDialog(message);
 	}
 	
-	/**
-	 * Adds the text from the parameter to the end of the text area.
-	 * 
-	 * @param out
-	 *            The text to be added to the end of the text area.
+	/* (non-Javadoc)
+	 * @see ViewInterface#outputText(java.lang.String)
 	 */
+	@Override
 	public void outputText(String out) {
 		outputField.append(out);
 		outputField.setCaretPosition(outputField.getDocument().getLength());
 	}
 
-	/**
-	 * Replaces the action listener for the text field.
-	 * 
-	 * @param old
-	 *            The action listener to be removed.
-	 * @param current
-	 *            The action listener to be added.
+	/* (non-Javadoc)
+	 * @see ViewInterface#setListener(java.awt.event.ActionListener, java.awt.event.ActionListener)
 	 */
+	@Override
 	public void setListener(ActionListener old, ActionListener current) {
 		inputField.removeActionListener(old);
 		inputField.addActionListener(current);
 	}
 	
-	/**
-	 * Replaces the key listener for the text field.
-	 * 
-	 * @param old
-	 *            The key listener to be removed.
-	 * @param current
-	 *            The key listener to be added.
+	/* (non-Javadoc)
+	 * @see ViewInterface#setKeyListener(java.awt.event.KeyListener, java.awt.event.KeyListener)
 	 */
+	@Override
 	public void setKeyListener(KeyListener old, KeyListener current) {
 		inputField.removeKeyListener(old);
 		inputField.addKeyListener(current);
 	}
 
-	/**
-	 * Clears the text from the text field.
+	/* (non-Javadoc)
+	 * @see ViewInterface#clearInputField()
 	 */
+	@Override
 	public void clearInputField() {
 		inputField.setText(null);
 	}
