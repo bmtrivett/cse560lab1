@@ -1,6 +1,6 @@
 /**
  * This utility class provides methods that can be used for
- * commonly performed operations.
+ * commonly performed operations in the Interpreter class.
  * @author GerardLouis
  *
  */
@@ -102,6 +102,14 @@ public class interpreterUtility {
 		return Integer.toHexString(result).toUpperCase();
 	}
 	
+	/**
+	 * Checks if the given operand is on the same page as the instruction.
+	 * Does this by making sure the upper 7 bits of operand and programCounter
+	 * are equal.
+	 * @param operand 
+	 * @param programCounter
+	 * @return
+	 */
 	public static boolean isOnSamePage(String operand, String programCounter) {
 		operand = Utility.HexToBinary(operand);
 		programCounter = Utility.HexToBinary(programCounter);
