@@ -4,7 +4,9 @@ import java.io.*;
 
 /**
  * To put the input information into the data structures that represent the
- * memory and registers of the machine.
+ * memory and registers of the machine. It will read in a .txt file and check it
+ * for the correct format according to the User Guide. If there is a problem
+ * with the input file an error will be output onto the screen. 
  * 
  * @author BSchuck
  * 
