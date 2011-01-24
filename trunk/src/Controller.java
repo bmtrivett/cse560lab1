@@ -519,14 +519,14 @@ public class Controller {
 				String instName = Interpreter.instruction;
 
 				// Display the instruction being executed
-				MachineMain.machineView.outputText("\t\tInstruction: "
+				MachineMain.machineView.outputText("\nInstruction: "
 						+ instName + '\n');
 				
 				// Check if the loader returned an error finding the file.
 				if (executeError != null) {
 					// Execute trap or debug instructions if they occurred
 					pauseForTrapExecution = true;
-					if (executeError.substring(0,5).equals("TRAP")){
+					if (executeError.substring(0,4).equals("TRAP")){
 						// Execute the trap
 						String trapError = executeTrap(executeError);
 						
@@ -540,7 +540,7 @@ public class Controller {
 						} else if (trapError != null){
 							MachineMain.machineView.outputText(trapError + '\n');
 						}
-					} else if (executeError.substring(0,5).equals("DBUG")) {
+					} else if (executeError.substring(0,4).equals("DBUG")) {
 						// Display registers if DBUG instruction occurs.
 						displayAllRegisters();
 					} else if (Utility.isHexString(executeError.substring(0,4))){
@@ -587,7 +587,7 @@ public class Controller {
 							MachineMain.machineView
 									.outputText("\tR"
 											+ Utility
-													.DecimalValueToHex(regAltered[counter])
+													.DecimalValueToHex(regAltered[counter]).substring(3)
 											+ "             \t\t"
 											+ MachineMain.machineModel.registerMap
 													.get(regAltered[counter])
