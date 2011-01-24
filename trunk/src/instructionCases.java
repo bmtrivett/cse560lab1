@@ -482,7 +482,7 @@ public class instructionCases {
 		
 		result = memoryArray[Integer.parseInt(result, 2)];
 		
-		result = memoryArray[Integer.parseInt(result, 2)];
+		result = memoryArray[Integer.parseInt(result, 16)];
 		
 		result = Utility.HexToBinary(result);
 		// Modify CCRs (if result is negative, set N, etc)
