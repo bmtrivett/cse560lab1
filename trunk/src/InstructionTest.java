@@ -9,246 +9,269 @@ import org.junit.Test;
 
 public class InstructionTest  {
 
+	private Map<Integer, String> rMap;
+	private String[] memArray;
+	private Map<Character, Boolean> ccReg;
+	private String pc;
+	private String bRep;
+	private Integer[] rChange;
+	private String[] mChange;
+	private String answer;
+	
 	@Before
-	public void initialize() {
-	
-		}
-	
-		@Test
-		public void JSRR(){
-		Map<Integer, String> rMap;
-		rMap = new HashMap<Integer, String>();
-		rMap.put(5, "3040");
-		String pc = "3031";
-		String bRep = "100101001011";
-		Integer[] rChange = new Integer[5];
-			
-			String answer;
-			answer = instructionCases.JSRR(rMap, pc, bRep, rChange);
-			
-			Assert.assertEquals("Error: JSRR is broken" , "304B", answer);
-		
+	public void initiliaze() {
+		this.rMap = new HashMap<Integer, String>();
+		this.memArray = new String[65536];
+		this.ccReg = new HashMap<Character, Boolean>();
+		this.pc = "3031";
+		this.bRep = "100101001011";
+		this.rChange = new Integer[5];
+		this.mChange = new String[5];
 	}
-		@Test
-		public void JSR(){
-		Map<Integer, String> rMap;
-		rMap = new HashMap<Integer, String>();
-		rMap.put(5, "3040");
-		String pc = "3031";
-		String bRep = "100101001011";
-		Integer[] rChange = new Integer[5];
-			
-			String answer;
-			answer = instructionCases.JSR(rMap, pc, bRep, rChange);
-			
-			Assert.assertEquals("Error: JSR is broken", "314B", answer);
-		
-	}
-		/*
-		@Test
-		public void Branch(){
-		Map<Character, Boolean> rMap = new HashMap<Character, Boolean>();
-		rMap.put('N', true);
-		String pc = "3031";
-		String bRep = "100101001011";
 
-			
-			String answer;
-			answer = instructionCases.BRx(rMap, pc, bRep);
-			
-			Assert.assertEquals("Error: BRx is broken" , "314B", answer);
-		
+	/**
+	 * Bare-bones test for JSRR.
+	 */
+	@Test
+	public void JSRR(){
+		this.rMap.put(5, "3040");
+		this.answer = instructionCases.JSRR(
+				this.rMap, this.pc, this.bRep, this.rChange);
+
+		Assert.assertEquals("Error: JSRR is broken" , "304B", this.answer);
+
+	}
+	
+	/**
+	 * Bare-bones test for JSR.
+	 */
+	@Test
+	public void JSR(){
+		rMap.put(5, "3040");
+		this.answer = instructionCases.JSR(
+				this.rMap, this.pc, this.bRep, this.rChange);
+
+		Assert.assertEquals("Error: JSR is broken", "314B", this.answer);
+
+	}
+	/**
+	 * Bare-bones test for BRx.
+	 */
+	/*
+	@Test
+	public void Branch(){
+		ccReg.put('N', true);
+		this.answer = instructionCases.BRx(this.ccReg, this.pc, bRep);
+
+		Assert.assertEquals("Error: BRx is broken" , "314B", answer);
+
 	}*/
-		@Test
-		public void Load(){
-			Map<Integer, String> rMap;
-			rMap = new HashMap<Integer, String>();
-			Map<Character, Boolean> ccReg = new HashMap<Character, Boolean>();
-			rMap.put(4, "3040");
-			ccReg.put('N', true);
-			String pc = "3031";
-			String bRep = "100101001011";
-			Integer[] rChange = new Integer[5];
-			String[] memArray = new String[65536];
-			memArray[12619] = "314B";
-
-			
-			String answer;
-			instructionCases.LD(rMap, memArray, ccReg,pc, bRep, rChange);
-			answer = rMap.get(4);
-			
-			Assert.assertEquals("Error: LD is broken", "314B", answer);
-		
-	}
-		@Test
-		public void LoadI(){
-			Map<Integer, String> rMap;
-			rMap = new HashMap<Integer, String>();
-			Map<Character, Boolean> ccReg = new HashMap<Character, Boolean>();
-			rMap.put(4, "3040");
-			ccReg.put('N', true);
-			String pc = "3031";
-			String bRep = "100101001011";
-			Integer[] rChange = new Integer[5];
-			String[] memArray = new String[65536];
-			memArray[12619] = "3030";
-			memArray[12336] = "314B";
-			
-
-			
-			String answer;
-			instructionCases.LDI(rMap, memArray, ccReg,pc, bRep, rChange);
-			answer = rMap.get(4);
-			
-			Assert.assertEquals("Error: JDI is broken", "314B", answer);
-		
-	}
-		@Test
-		public void LoadR(){
-			Map<Integer, String> rMap;
-			rMap = new HashMap<Integer, String>();
-			Map<Character, Boolean> ccReg = new HashMap<Character, Boolean>();
-			rMap.put(4, "3040");
-			rMap.put(5, "0000");
-			ccReg.put('N', true);
-			String bRep = "100101001011";
-			Integer[] rChange = new Integer[5];
 	
-			
+	/**
+	 * Bare-bones test for LD.
+	 */
+	@Test
+	public void Load(){
+		this.rMap.put(4, "3040");
+		this.ccReg.put('N', true);
+		this.memArray[12619] = "314B";
 
-			
-			String answer;
-			instructionCases.LDR(rMap, ccReg, bRep, rChange);
-			answer = rMap.get(4);
-			
-			Assert.assertEquals("Error: LDR is broken", "000B", answer);
-		
+		instructionCases.LD(
+				this.rMap, this.memArray, this.ccReg, this.pc, this.bRep, this.rChange);
+		this.answer = this.rMap.get(4);
+
+		Assert.assertEquals("Error: LD is broken", "314B", this.answer);
+
 	}
-		@Test
-		public void LoadA(){
-			Map<Integer, String> rMap;
-			rMap = new HashMap<Integer, String>();
-			Map<Character, Boolean> ccReg = new HashMap<Character, Boolean>();
-			rMap.put(4, "3040");
-			rMap.put(5, "0000");
-			String pc = "3031";
-			ccReg.put('N', true);
-			String bRep = "100101001011";
-			Integer[] rChange = new Integer[5];
 	
-			
+	/**
+	 * Bare-bones test for LDI.
+	 */
+	@Test
+	public void LoadI(){
+		this.rMap.put(4, "3040");
+		this.ccReg.put('N', true);
+		this.memArray[12619] = "3030";
+		this.memArray[12336] = "314B";
 
-			
-			String answer;
-			instructionCases.LEA(rMap, ccReg, pc, bRep, rChange);
-			answer = rMap.get(4);
-			
-			Assert.assertEquals("Error: LEA is broken", "314B", answer);
-		
+		instructionCases.LDI(
+				this.rMap, this.memArray, this.ccReg, this.pc, this.bRep, this.rChange);
+		this.answer = this.rMap.get(4);
+
+		Assert.assertEquals("Error: LDI is broken", "314B", this.answer);
+
 	}
-		@Test
-		public void Store(){
-			Map<Integer, String> rMap;
-			rMap = new HashMap<Integer, String>();
-			Map<Character, Boolean> ccReg = new HashMap<Character, Boolean>();
-			rMap.put(4, "3040");
-			ccReg.put('N', true);
-			String pc = "3031";
-			String bRep = "100101001011";
-			String[] mChange = new String[5];
-			String[] memArray = new String[65536];
 	
-			
-
-			
-			String answer;
-			instructionCases.ST(rMap, memArray, ccReg, pc, bRep, mChange);
-			answer = memArray[12619];
-			
-			Assert.assertEquals("Error: ST is broken", "3040", answer);
+	/**
+	 * Bare-bones test for LDR
+	 */
+	@Test
+	public void LoadR(){
+		this.rMap.put(4, "3040");
+		this.rMap.put(5, "0000");
+		this.ccReg.put('N', true);
 		
+		instructionCases.LDR(this.rMap, this.ccReg, this.bRep, this.rChange);
+		this.answer = this.rMap.get(4);
+
+		Assert.assertEquals("Error: LDR is broken", "000B", this.answer);
+
 	}
-		@Test
-		public void StoreI(){
-			Map<Integer, String> rMap;
-			rMap = new HashMap<Integer, String>();
-			Map<Character, Boolean> ccReg = new HashMap<Character, Boolean>();
-			rMap.put(4, "3040");
-			ccReg.put('N', true);
-			String pc = "3031";
-			String bRep = "100101001011";
-			String[] mChange = new String[5];
-			String[] memArray = new String[65536];
-			memArray[12619] = "3040";
-			
-			
+	
+	/**
+	 * Bare-bones test for LEA.
+	 */
+	@Test
+	public void LoadA(){
+		this.rMap.put(4, "3040");
+		this.rMap.put(5, "0000");
+		this.ccReg.put('N', true);
 
-			
-			String answer;
-			instructionCases.STI(rMap, memArray, ccReg, pc, bRep, mChange);
-			answer = memArray[12619];
-			
-			Assert.assertEquals("Error: STI is broken", "3040", answer);
-		
+		instructionCases.LEA(
+				this.rMap, this.ccReg, this.pc, this.bRep, this.rChange);
+		this.answer = this.rMap.get(4);
+
+		Assert.assertEquals("Error: LEA is broken", "314B", this.answer);
+
 	}
-		@Test
-		public void StoreR(){
-			Map<Integer, String> rMap;
-			rMap = new HashMap<Integer, String>();
-			Map<Character, Boolean> ccReg = new HashMap<Character, Boolean>();
-			rMap.put(4, "3040");
-			rMap.put(5, "3040");
-			ccReg.put('N', true);
-			String bRep = "100101001011";
-			String[] mChange = new String[5];
-			String[] memArray = new String[65536];
-			
-			
-			
+	
+	/**
+	 * Bare-bones test for ST.
+	 */
+	@Test
+	public void Store(){
+		this.rMap.put(4, "3040");
+		this.ccReg.put('N', true);
 
-			
-			String answer;
-			instructionCases.STR(rMap, memArray, ccReg, bRep, mChange);
-			answer = memArray[12363];
-			
-			Assert.assertEquals("Error: STR is broken", "3040", answer);
-		
+		instructionCases.ST(
+				this.rMap, this.memArray, this.ccReg, this.pc, this.bRep, this.mChange);
+		this.answer = this.memArray[12619];
+
+		Assert.assertEquals("Error: ST is broken", "3040", this.answer);
+
 	}
-		@Test
-		public void Not(){
-			Map<Integer, String> rMap;
-			rMap = new HashMap<Integer, String>();
-			Map<Character, Boolean> ccReg = new HashMap<Character, Boolean>();
-			rMap.put(5, "3040");
-			ccReg.put('N', true);
-			String bRep = "100101001011";
-			Integer[] rChange = new Integer[5];
-			
-			
-			
-			
+	
+	/**
+	 * Bare-bones test for STI.
+	 */
+	@Test
+	public void StoreI(){
+		this.rMap.put(4, "3040");
+		this.ccReg.put('N', true);
+		this.memArray[12619] = "3040";
 
-			
-			String answer;
-			instructionCases.NOT(rMap, ccReg, bRep, rChange);
-			answer = rMap.get(4);
-			
-			Assert.assertEquals("Error: STR is broken", "CFBF", answer);
-		
+		instructionCases.STI(
+				this.rMap, this.memArray, this.ccReg, this.pc, this.bRep, this.mChange);
+		this.answer = this.memArray[12619];
+
+		Assert.assertEquals("Error: STI is broken", "3040", this.answer);
+
 	}
-		@Test
-		public void Return(){
-			Map<Integer, String> rMap;
-			rMap = new HashMap<Integer, String>();
-			rMap.put(7, "3040");
+	
+	/**
+	 * Bare-bones test for STR.
+	 */
+	@Test
+	public void StoreR(){
+		this.rMap.put(4, "3040");
+		this.rMap.put(5, "3040");
+		this.ccReg.put('N', true);
 
-			
-			String answer;
-			answer =instructionCases.RET(rMap);
+		instructionCases.STR(
+				this.rMap, this.memArray, this.ccReg, this.bRep, this.mChange);
+		this.answer = this.memArray[12363];
+
+		Assert.assertEquals("Error: STR is broken", "3040", this.answer);
+
+	}
+	
+	/**
+	 * Bare-bones test for NOT.
+	 */
+	@Test
+	public void Not(){
+		this.rMap.put(5, "3040");
+		this.ccReg.put('N', true);
+
+		instructionCases.NOT(this.rMap, this.ccReg, this.bRep, this.rChange);
+		this.answer = this.rMap.get(4);
+
+		Assert.assertEquals("Error: NOT is broken", "CFBF", this.answer);
+
+	}
+	
+	/**
+	 * Bare-bones test for RET.
+	 */
+	@Test
+	public void Return(){
+		this.rMap.put(7, "3040");
+
+		this.answer =instructionCases.RET(this.rMap);
+
+		Assert.assertEquals("Error: STR is broken", "3040", this.answer);
+
+	}
+	
+	/**
+	 * Bare-bones test for ADD, immediate mode.
+	 */
+	@Test
+	public void AddImm(){
+		this.bRep = "100101101011";
+		this.rMap.put(5, "0001");
 		
-			Assert.assertEquals("Error: STR is broken", "3040", answer);
+		instructionCases.ADD(this.rMap, this.ccReg, this.bRep, this.rChange);
 		
+		this.answer = this.rMap.get(4);
+		
+		Assert.assertEquals(
+				"Error: ADD, immediate mode, is broken", "000C", this.answer);
+	}
+	
+	/**
+	 * Bare-bones test for ADD.
+	 */
+	@Test
+	public void Add(){
+		this.rMap.put(5, "0001");
+		this.rMap.put(3, "1019");
+		
+		instructionCases.ADD(this.rMap, this.ccReg, this.bRep, this.rChange);
+		
+		this.answer = this.rMap.get(4);
+		
+		Assert.assertEquals("Error: ADD is broken", "101A", this.answer);
+	}
+	
+	/**
+	 * Bare-bones test for AND, immediate mode.
+	 */
+	@Test
+	public void AndImm(){
+		this.bRep = "100101101011";
+		this.rMap.put(5, "0001");
+		
+		instructionCases.AND(this.rMap, this.ccReg, this.bRep, this.rChange);
+		
+		this.answer = this.rMap.get(4);
+		
+		Assert.assertEquals(
+				"Error: AND, immediate mode, is broken", "0001", this.answer);
+	}
+	
+	/**
+	 * Bare-bones test for AND.
+	 */
+	@Test
+	public void And(){
+		this.rMap.put(5, "9F8F");
+		this.rMap.put(3, "6C3D");
+		
+		instructionCases.AND(this.rMap, this.ccReg, this.bRep, this.rChange);
+		
+		this.answer = this.rMap.get(4);
+		
+		Assert.assertEquals("Error: AND is broken", "0C0D", this.answer);
 	}
 }
-
-
