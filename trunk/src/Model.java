@@ -8,7 +8,7 @@ import java.util.Map;
  * @author #1Group
  * 
  */
-public class Model {
+public class Model implements ModelInterface {
 	/**
 	 * The entire abstract machine's memory. Each string in the array will have
 	 * a length of 4, representing the hex value stored there.
@@ -43,11 +43,6 @@ public class Model {
 	 * the header record.
 	 */
 	public String programName;
-
-	/**
-	 * The default limit of instructions allowed to be executed.
-	 */
-	public static final int DEFAULT_INSTRUCTION_LIMIT = 1000;
 
 	/**
 	 * The potentially user-defined instance of the maximum number of

@@ -8,13 +8,13 @@
  * @author GerardLouis
  *
  */
-public class Interpreter {
+public class Interpreter implements InterpreterInterface {
 	
 	/**
 	 * This instructionParser object will have the instruction that
 	 * is to be executed passed in to it in order to be parsed.
 	 */
-	public static instructionParser parserOfInstructions;
+	public static InstructionParserInterface parserOfInstructions;
 	
 	/**
 	 * This array will have the memory locations that are changed
@@ -46,6 +46,10 @@ public class Interpreter {
 		parserOfInstructions = new instructionParser();
 	}
 
+	/* (non-Javadoc)
+	 * @see InterpreterInterface#ExecuteAnInstruction()
+	 */
+	@Override
 	public String ExecuteAnInstruction() {
 		// The decimal value of the programCounter.
 		Integer programCounterDecimal = Utility.HexToDecimalValue(MachineMain.machineModel.programCounter);

@@ -9,7 +9,7 @@ import java.io.*;
  * 
  * 
  */
-public class InputInstructions {
+public class InputInstructions{
 	/**
 	 * The position to allocate how many text records are to be read in.
 	 */
