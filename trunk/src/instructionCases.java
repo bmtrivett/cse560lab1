@@ -892,6 +892,9 @@ public class instructionCases {
 		
 		String intermediate = registerMap.get(Integer.parseInt(BaseR, 2));
 		int numresult = Utility.HexToDecimalValue(intermediate);
+		if (numresult > 65535){
+			numresult = numresult - 65535;
+		}
 		numresult += Integer.parseInt(binaryRep.substring(6), 2);
 		
 		if (binaryRep.charAt(0) == '1') {
