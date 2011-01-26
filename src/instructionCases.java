@@ -85,7 +85,9 @@ public class instructionCases {
 			conditionCodeRegisters.put('P', true);
 		}
 		else {
+			conditionCodeRegisters.put('N', false);
 			conditionCodeRegisters.put('Z', true);
+			conditionCodeRegisters.put('P', false);
 		}
 		
 		// Put hex string value of result in DR, put DR
@@ -197,7 +199,9 @@ public class instructionCases {
 			conditionCodeRegisters.put('P', true);
 		}
 		else {
+			conditionCodeRegisters.put('N', false);
 			conditionCodeRegisters.put('Z', true);
+			conditionCodeRegisters.put('P', false);
 		}
 		
 		// Put hex string value of result in DR, put DR
@@ -277,7 +281,9 @@ public class instructionCases {
 			conditionCodeRegisters.put('P', true);
 		}
 		else {
+			conditionCodeRegisters.put('N', false);
 			conditionCodeRegisters.put('Z', true);
+			conditionCodeRegisters.put('P', false);
 		}
 		
 		// Put hex string value of result in DR, put DR
@@ -340,7 +346,9 @@ public class instructionCases {
 			conditionCodeRegisters.put('P', true);
 		}
 		else {
+			conditionCodeRegisters.put('N', false);
 			conditionCodeRegisters.put('Z', true);
+			conditionCodeRegisters.put('P', false);
 		}
 		
 		// Put hex string value of result in DR, put DR
@@ -417,7 +425,9 @@ public class instructionCases {
 			conditionCodeRegisters.put('P', true);
 		}
 		else {
+			conditionCodeRegisters.put('N', false);
 			conditionCodeRegisters.put('Z', true);
+			conditionCodeRegisters.put('P', false);
 		}
 		
 		// Put hex string value of result in DR, put DR
@@ -497,7 +507,9 @@ public class instructionCases {
 			conditionCodeRegisters.put('P', true);
 		}
 		else {
+			conditionCodeRegisters.put('N', false);
 			conditionCodeRegisters.put('Z', true);
+			conditionCodeRegisters.put('P', false);
 		}
 		
 		// Put hex string value of result in DR, put DR
@@ -564,7 +576,9 @@ public class instructionCases {
 			conditionCodeRegisters.put('P', true);
 		}
 		else {
+			conditionCodeRegisters.put('N', false);
 			conditionCodeRegisters.put('Z', true);
+			conditionCodeRegisters.put('P', false);
 		}
 		
 		// Put hex string value of result in DR, put DR

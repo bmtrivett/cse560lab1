@@ -256,7 +256,9 @@ public class Controller implements ControllerInterface {
 				MachineMain.machineModel.conditionCodeRegisters.put('Z', false);
 				MachineMain.machineModel.conditionCodeRegisters.put('P', true);
 			} else {
+				MachineMain.machineModel.conditionCodeRegisters.put('N', false);
 				MachineMain.machineModel.conditionCodeRegisters.put('Z', true);
+				MachineMain.machineModel.conditionCodeRegisters.put('P', false);
 			}
 			// Register 0 was altered, so record that in the interpreter.
 			Integer counter = 0;
@@ -488,12 +490,12 @@ public class Controller implements ControllerInterface {
 			if (!isExecuting) {
 				isExecuting = true;
 				MachineMain.machineView.outputText("Executing...\n");
-				// Create an instance of the interpreter
-				Interpreter interQuiet = new Interpreter();
-
+				
 				// Run the interpreter until the instruction limit is reached.
 				int instructionCount = 0;
 				while (instructionCount < MachineMain.machineModel.instructionLimit) {
+					// Create an instance of the interpreter
+					Interpreter interQuiet = new Interpreter();
 					// Execute an instruction and get information on what
 					// happened.
 					String executeError = interQuiet.ExecuteAnInstruction();
@@ -892,7 +894,9 @@ public class Controller implements ControllerInterface {
 				MachineMain.machineModel.conditionCodeRegisters.put('Z', false);
 				MachineMain.machineModel.conditionCodeRegisters.put('P', true);
 			} else {
+				MachineMain.machineModel.conditionCodeRegisters.put('N', false);
 				MachineMain.machineModel.conditionCodeRegisters.put('Z', true);
+				MachineMain.machineModel.conditionCodeRegisters.put('P', false);
 			}
 			// Register 0 was altered, so record that in the interpreter.
 			Integer counter = 0;
@@ -938,7 +942,9 @@ public class Controller implements ControllerInterface {
 				MachineMain.machineModel.conditionCodeRegisters.put('Z', false);
 				MachineMain.machineModel.conditionCodeRegisters.put('P', true);
 			} else {
+				MachineMain.machineModel.conditionCodeRegisters.put('N', false);
 				MachineMain.machineModel.conditionCodeRegisters.put('Z', true);
+				MachineMain.machineModel.conditionCodeRegisters.put('P', false);
 			}
 			// Convert to 2's complement and store in R0
 			number = Utility.convertToTwosComplement(number);
