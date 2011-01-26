@@ -60,7 +60,7 @@ public class Model implements ModelInterface {
 		memoryArray = new String[65536];
 		instructionLimit = DEFAULT_INSTRUCTION_LIMIT;
 		conditionCodeRegisters.put('N', false);
-		conditionCodeRegisters.put('Z', false);
+		conditionCodeRegisters.put('Z', true);
 		conditionCodeRegisters.put('P', false);
 		for (int i = 0; i < 8; i++) {
 			registerMap.put(i, "0000");

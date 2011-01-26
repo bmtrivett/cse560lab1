@@ -1,4 +1,3 @@
-
 import java.io.*;
 
 /**
@@ -9,7 +8,7 @@ import java.io.*;
  * 
  * 
  */
-public class InputInstructions{
+public class InputInstructions {
 	/**
 	 * The position to allocate how many text records are to be read in.
 	 */
@@ -77,6 +76,10 @@ public class InputInstructions{
 			}
 
 			if (read.substring(0, 1).equals("E")) {
+				if (Utility.HexToDecimalValue(read.substring(1, 5)) >= decValueStart
+						&& Utility.HexToDecimalValue((read.substring(1, 5))) <= decTotalMem) {
+					return "The end record is out of the allocated bounds.";
+				}
 				break;
 			}
 			count = 0;
