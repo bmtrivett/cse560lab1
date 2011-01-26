@@ -82,14 +82,6 @@ public class InputInstructions {
 				}
 				break;
 			}
-			count = 0;
-			while (count < 9) {
-				char ch = read.charAt(count);
-				if (Character.isLowerCase(ch) || ch == ' ') {
-					return "The text record is incorrect in the file please try a new file.";
-				}
-				count++;
-			}
 			if (read.charAt(0) != 'T') {
 				return "The text record is incorrect in the file please try a new file.";
 			}
@@ -100,6 +92,16 @@ public class InputInstructions {
 			if (counter > decValueMem) {
 				return "There are more text record than expected.";
 			}
+		
+
+			count = 0;
+			while (count < 9) {
+				char ch = read.charAt(count);
+				if (Character.isLowerCase(ch) || ch == ' ') {
+					return "The text record is incorrect in the file please try a new file.";
+				}
+				count++;
+			}
 			String textInstructions = read.toString();
 			String memoryPos = textInstructions.substring(1, 5);
 			int decMemPos = Integer.parseInt(memoryPos, 16);
@@ -107,7 +109,6 @@ public class InputInstructions {
 			if (decMemPos >= decTotalMem || decMemPos < decValueStart) {
 				return "The value is out of the allocated memory.";
 			}
-
 			String textData = textInstructions.substring(5, 9);
 
 			// convert memory to pos in array then add it
