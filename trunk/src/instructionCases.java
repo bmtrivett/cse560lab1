@@ -937,6 +937,8 @@ public class instructionCases {
 	public static String TRAP(
 			String binaryRep
 	) {
+		
 		return "TRAP" + Utility.BinaryToHex(binaryRep.substring(4)).substring(2);
+		
 	}
 }

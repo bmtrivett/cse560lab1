@@ -198,10 +198,30 @@ public class Controller implements ControllerInterface {
 		if (trapType.equals("21")) {
 			// OUT: Write the character in R0[7:0] to the console.
 			trapOut();
+			// Set register 7 to the program counter per specifications.
+			MachineMain.machineModel.registerMap.put(7,
+					MachineMain.machineModel.programCounter);
+			// Register 7 was altered, so record that in the interpreter.
+			Integer counter = 0;
+			while (Interpreter.registerChanges[counter] != null) {
+				counter++;
+			}
+			Interpreter.registerChanges[counter] = 7;
+		
 		} else if (trapType.equals("22")) {
 			// PUTS: Write the null-terminated string pointed to by R0 to the
 			// console.
 			trapPuts();
+			// Set register 7 to the program counter per specifications.
+			MachineMain.machineModel.registerMap.put(7,
+					MachineMain.machineModel.programCounter);
+			// Register 7 was altered, so record that in the interpreter.
+			Integer counter = 0;
+			while (Interpreter.registerChanges[counter] != null) {
+				counter++;
+			}
+			Interpreter.registerChanges[counter] = 7;
+			
 		} else if (trapType.equals("23")) {
 			// IN: Print a prompt on the screen and read a single character from
 			// the keyboard. The character is copied to the screen and its ASCII
@@ -218,9 +238,29 @@ public class Controller implements ControllerInterface {
 					containsError = keyTyped(ch);
 				}
 			}
+			// Set register 7 to the program counter per specifications.
+			MachineMain.machineModel.registerMap.put(7,
+					MachineMain.machineModel.programCounter);
+			// Register 7 was altered, so record that in the interpreter.
+			Integer counter = 0;
+			while (Interpreter.registerChanges[counter] != null) {
+				counter++;
+			}
+			Interpreter.registerChanges[counter] = 7;
+			
 		} else if (trapType.equals("25")) {
 			// HALT: Halt execution and print a message to the console.
 			error = "HALT";
+			// Set register 7 to the program counter per specifications.
+			MachineMain.machineModel.registerMap.put(7,
+					MachineMain.machineModel.programCounter);
+			// Register 7 was altered, so record that in the interpreter.
+			Integer counter = 0;
+			while (Interpreter.registerChanges[counter] != null) {
+				counter++;
+			}
+			Interpreter.registerChanges[counter] = 7;
+			
 		} else if (trapType.equals("31")) {
 			// OUTN: Write the value of R0 to the console as a decimal integer.
 			Integer decimal = Utility
@@ -229,6 +269,16 @@ public class Controller implements ControllerInterface {
 			// Convert from 2's complement
 			decimal = Utility.convertFromTwosComplement(decimal);
 			MachineMain.machineView.outputText(decimal.toString());
+			// Set register 7 to the program counter per specifications.
+			MachineMain.machineModel.registerMap.put(7,
+					MachineMain.machineModel.programCounter);
+			// Register 7 was altered, so record that in the interpreter.
+			Integer counter = 0;
+			while (Interpreter.registerChanges[counter] != null) {
+				counter++;
+			}
+			Interpreter.registerChanges[counter] = 7;
+			
 		} else if (trapType.equals("33")) {
 			// INN: Print a prompt on the screen and read a decimal number from
 			// the keyboard. The number is echoed to the screen and stored in
@@ -239,6 +289,16 @@ public class Controller implements ControllerInterface {
 				.showInputDialog("Enter an integer: ");
 				containsError = readTrapInteger(input);
 			}
+			// Set register 7 to the program counter per specifications.
+			MachineMain.machineModel.registerMap.put(7,
+					MachineMain.machineModel.programCounter);
+			// Register 7 was altered, so record that in the interpreter.
+			Integer counter = 0;
+			while (Interpreter.registerChanges[counter] != null) {
+				counter++;
+			}
+			Interpreter.registerChanges[counter] = 7;
+			
 		} else if (trapType.equals("43")) {
 			// RND: Store a random number in R0.
 			Random generator = new Random();
