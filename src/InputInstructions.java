@@ -36,19 +36,24 @@ public class InputInstructions {
 		BufferedReader file = new BufferedReader(reader);
 		read = file.readLine();
 		if (read.charAt(0) != 'H') {
-			return "The header record is incorrect in the file please try a new file.";
+			return "The header record is incorrect in the file it does " +
+					"not begin with H on line  0.";
 		}
 
 		count = 0;
 		while (count < 15) {
 			char ch = read.charAt(count);
-			if (Character.isLowerCase(ch) || ch == ' ') {
-				return "The header record is incorrect in the file please try a new file.";
+			//
+			//do we actually wanna take out is lowercase
+			//Character.isLowerCase(ch)
+			if ( ch == ' ') {
+				return "The header record is incorrect in the file on line  0.";
 			}
 			count++;
 		}
 		if (read.length() != 15) {
-			return "The header record is incorrect in the file please try a new file.";
+			return "The header record is incorrect in the file on line  0. The " +
+					"length is not equal to 15";
 		}
 		// gets just the first line.
 		String firstLine = read.toString();
@@ -76,21 +81,24 @@ public class InputInstructions {
 			}
 
 			if (read.substring(0, 1).equals("E")) {
-				if (Utility.HexToDecimalValue(read.substring(1, 5)) >= decValueStart
-						&& Utility.HexToDecimalValue((read.substring(1, 5))) <= decTotalMem) {
+				//i think we changed this and it made it worse????
+				if (!(Utility.HexToDecimalValue(read.substring(1, 5)) >= decValueStart)
+						|| !(Utility.HexToDecimalValue((read.substring(1, 5))) <= decTotalMem)) {
 					return "The end record is out of the allocated bounds.";
 				}
 				break;
 			}
 			if (read.charAt(0) != 'T') {
-				return "The text record is incorrect in the file please try a new file.";
+				return "The text record is incorrect in the file on line " +  counter +
+				" it does not begin with a T.";
 			}
 
 			if (read.length() != 9) {
-				return "The text record has an error on line " + counter;
+				return "The text record has an error on line " + counter + " the length does"
+				+ " not equal 9.";
 			}
 			if (counter > decValueMem) {
-				return "There are more text record than expected.";
+				return "The textRecords are more than the maximum allocated space";
 			}
 		
 
@@ -98,14 +106,17 @@ public class InputInstructions {
 			while (count < 9) {
 				char ch = read.charAt(count);
 				if (Character.isLowerCase(ch) || ch == ' ') {
-					return "The text record is incorrect in the file please try a new file.";
+					return "The text record is incorrect on line  " +  counter + " it is" +
+							"not all uppercase or it includes a space";
 				}
 				count++;
 			}
 			String textInstructions = read.toString();
 			String memoryPos = textInstructions.substring(1, 5);
 			int decMemPos = Integer.parseInt(memoryPos, 16);
-
+			//
+			//or did we change this one??
+			//
 			if (decMemPos >= decTotalMem || decMemPos < decValueStart) {
 				return "The value is out of the allocated memory.";
 			}
