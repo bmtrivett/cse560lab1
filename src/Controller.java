@@ -359,13 +359,11 @@ public class Controller implements ControllerInterface {
 		int count = Utility
 		.HexToDecimalValue(MachineMain.machineModel.registerMap.get(0));
 		while (!(MachineMain.machineModel.memoryArray[count] == null)) {
-			if (MachineMain.machineModel.memoryArray[count].substring(2, 4)
-					.equals("00")) {
+			if (MachineMain.machineModel.memoryArray[count].equals("0000")) {
 				break;
 			}
 			int decimal = Utility
-			.HexToDecimalValue(MachineMain.machineModel.memoryArray[count]
-			                                                        .substring(2, 4));
+			.HexToDecimalValue(MachineMain.machineModel.memoryArray[count]);
 			String output = Character.toString((char) decimal);
 			MachineMain.machineView.outputText(output);
 			count++;
